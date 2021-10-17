@@ -1,5 +1,5 @@
 sudo apt update
-sudo apt list --upgradeable
+apt list --upgradeable
 sudo apt upgrade
 sudo apt autopurge
 sudo apt purge ~c
