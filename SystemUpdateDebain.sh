@@ -7,5 +7,6 @@ sudo apt autoclean
 
 flatpak update
 flatpak uninstall --unused --delete-data
+flatpak repair
 
 sudo chkrootkit
