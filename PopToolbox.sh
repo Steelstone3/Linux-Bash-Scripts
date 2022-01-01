@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "Welcome to Pop_OS! Toolbox please select an option"
+echo "Welcome to Pop_OS! Toolbox please select an option";
 
-alias update_linux='sudo apt update; apt list --upgradeable; sudo apt upgrade; sudo apt autopurge; sudo apt purge ~c; sudo apt autoclean; flatpak update; flatpak uninstall --unused --delete-data; flatpak repair; sudo chkrootkit;'
+#alias update_linux='sudo apt update; apt list --upgradeable; sudo apt upgrade; sudo apt autopurge; sudo apt purge ~c; sudo apt autoclean; flatpak update; flatpak uninstall --unused --delete-data; flatpak repair; sudo chkrootkit';
 
-echo "update_linux alias added to your system. This will run a series of commands to update and clean your system."
+#echo "update_linux alias added to your system. This will run a series of commands to update and clean your system.";
 
 PS3='Please enter your choice: '
 options=("1: Pop_OS! Update System" "2: Pop_OS! Cleanup System" "3: Pop_OS! Upgrade To The Next OS Version" "4: List Installed Applications" "5: Kill Graphical Enviroment" "6: Hard Reset Of Display Manager" "7: Reset Network" "8: Check On Boot Startup Services" "9: Run Malware Scan" "10: apt Recovery" "11: Clear Terminal" "Quit")
