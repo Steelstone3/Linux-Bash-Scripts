@@ -51,7 +51,6 @@ do
                 
 	    	sudo systemctl restart gdm;
             	;;
-        
         "7: Reset Network")
         	echo "Restarting the networking service";
         	
