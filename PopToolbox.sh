@@ -6,12 +6,14 @@ echo "Welcome to Pop_OS! Toolbox please select an option";
 
 #echo "update_linux alias added to your system. This will run a series of commands to update and clean your system.";
 
-PS3='Please enter your choice: '
-options=("Pop_OS! Update System" "Pop_OS! Cleanup System" "Pop_OS! Upgrade To The Next OS Version" "List Installed Applications" "Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Network" "Check On Boot Startup Services" "Run Malware Scan" "apt Recovery" "Clear Terminal" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Pop_OS! Update System")
+systemManagement () {
+  local PS3='Please enter your choice: '
+  local options=("Pop_OS! Update System" "Pop_OS! Cleanup System" "Pop_OS! Upgrade To The Next OS Version" "Run Malware Scan" "Back")
+  local opt
+  select opt in "${options[@]}"
+  do
+      case $opt in
+          "Pop_OS! Update System")
         	echo "Updating packages";
         	
         	sudo apt update;
@@ -35,13 +37,29 @@ do
 		sudo apt full-upgrade;
 		pop-upgrade release upgrade;
 		;;
-        "List Installed Applications")
-        	echo "Listing installed packages";
+	"Run Malware Scan")
+        	echo "Running chkrootkit package";
         	
-        	apt list --installed;
-        	flatpak list;
-        	;;
-       	"Kill Graphical Enviroment")
+      		sudo apt install chkrootkit;
+      		
+      		sudo chkrootkit;
+      		;;
+	"Back")
+              return
+              ;;
+          *) echo "invalid option $REPLY";;
+      esac
+  done
+}
+
+systemRecovery () {
+  local PS3='Please enter your choice: '
+  local options=("Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Network" "apt Recovery" "Back")
+  local opt
+  select opt in "${options[@]}"
+  do
+      case $opt in
+        "Kill Graphical Enviroment")
 	    	echo "Killing Gnome Shell Session"
 
 	   	killall -3 gnome-shell
@@ -56,23 +74,7 @@ do
         	
         	sudo systemctl restart networking;
         	;;
-        "Check On Boot Startup Services")
-        	echo "Displaying CRITICAL chain of on boot starup services";
-        	
-        	sudo systemd-analyze critical-chain;
-        	
-        	echo "Use:";
-        	echo "systemctl enable/disable <service>";
-        	echo "To enable/disable services as daemons"
-        	;;
-        "Run Malware Scan")
-        	echo "Running chkrootkit package";
-        	
-      		sudo apt install chkrootkit;
-      		
-      		sudo chkrootkit;
-      		;;
-      	"apt Recovery")
+        "apt Recovery")
       		echo "Attempting to recover apt...";
       		
       		sudo dpkg --configure -a;
@@ -80,9 +82,80 @@ do
 		sudo apt install --fix-broken;
 		sudo apt install --fix-missing;
         	;;
-        "Clear Terminal")
-    		clear;
+	"Back")
+              return
+              ;;
+          *) echo "invalid option $REPLY";;
+      esac
+  done
+}
+
+performance () {
+  local PS3='Please enter your choice: '
+  local options=("Check On Boot Startup Services" "Back")
+  local opt
+  select opt in "${options[@]}"
+  do
+      case $opt in
+	"Check On Boot Startup Services")
+		echo "Displaying CRITICAL chain of on boot starup services";
+        	
+		sudo systemd-analyze critical-chain;
+        	
+		echo "Use:";
+		echo "systemctl enable/disable <service>";
+		echo "To enable/disable services as daemons"
+		;;
+	"Back")
+              return
+              ;;
+          *) echo "invalid option $REPLY";;
+      esac
+  done
+}
+
+packageQuery () {
+  local PS3='Please enter your choice: '
+  local options=("List All Installed Packages" "Find Local Package (To Do)" "Find Remote Package (To Do)" "Back")
+  local opt
+  select opt in "${options[@]}"
+  do
+      case $opt in
+        "List All Installed Packages")
+        	echo "Listing installed packages";
+        	
+        	apt list --installed;
+        	flatpak list;
+        	;;
+        "Find Local Package (To Do)")
+        	;;
+        "Find Remote Package (To Do)")
+        	;;
+	"Back")
+              return
+              ;;
+          *) echo "invalid option $REPLY";;
+      esac
+  done
+}
+
+PS3='Please enter your choice: '
+options=("Pop_OS! Management" "Pop_OS! Recovery" "Pop_OS! Performance" "Pop_OS! Package Query"  "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+    	"Pop_OS! Management")
+    		systemManagement
     		;;
+       	"Pop_OS! Recovery")
+       		systemRecovery
+       		;;
+       	"Pop_OS! Performance")
+       		performance
+       		;;
+       	"Pop_OS! Package Query")
+       		packageQuery
+       		;;
         "Quit")
             	break
             	;;
