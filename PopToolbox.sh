@@ -75,19 +75,59 @@ startupServices() {
         	
 	echo "Use:";
 	echo "systemctl enable/disable <service>";
-	echo "To enable/disable services as daemons"
+	echo "To enable/disable services as daemons";
 }
 
 listAllInstalledAptPackages() {
-	echo "Listing installed apt packages";
+	echo "Listing all installed apt packages";
         	
 	apt list --installed;
+}
+
+findInstalledAptPackage() {
+	echo "Find an installed apt package";
+	read -p "Enter search query: " searchQuery;
+	
+	apt list --installed | grep ${searchQuery} --ignore-case --color=auto;
+}
+
+findRemoteAptPackage() {
+	echo "Find an installed apt package";
+	read -p "Enter search query: " searchQuery;
+	
+	apt list | grep ${searchQuery} --ignore-case --color=auto;
+}
+
+listAllRemoteAptPackages() {
+	echo "Listing all remote apt packages";
+	
+	apt list | more
 }
 
 listAllInstalledFlatpakPackages() {
 	echo "Listing installed flatpak packages";
         	
        	flatpak list;
+}
+
+findInstalledFlatpakPackage() {
+	echo "Find an installed apt package";
+	read -p "Enter search query: " searchQuery;
+	
+	flatpak list | grep ${searchQuery} --ignore-case --color=auto;
+}
+        	
+findRemoteFlatpakPackage() {
+	echo "Find an installed apt package";
+	read -p "Enter search query: " searchQuery;
+	
+	flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto;
+}
+
+listAllRemoteFlatpakPackages() {
+	echo "Listing all remote apt packages";
+	
+	flatpak remote-ls | more;
 }
 
 systemManagement () {
@@ -164,7 +204,7 @@ performance () {
 
 aptQuery() {
   local PS3='Please enter your choice: '
-  local options=("List All Installed apt Packages" "Find Installed apt Package (To Do)" "Search For Remote apt Package (To Do)" "List All Remote apt Packages (To Do)" "Back")
+  local options=("List All Installed apt Packages" "Find Installed apt Package" "Search For Remote apt Package" "List All Remote apt Packages" "Back")
   local opt
   select opt in "${options[@]}"
   do
@@ -172,12 +212,14 @@ aptQuery() {
         "List All Installed apt Packages")
         	listAllInstalledAptPackages
         	;;
-        "Find Installed apt Package (To Do)")
+        "Find Installed apt Package")
+        	findInstalledAptPackage
         	;;
-        "Search For Remote apt Package (To Do)")
+        "Search For Remote apt Package")
+        	findRemoteAptPackage
         	;;
-        "List All Remote apt Packages (To Do)")
-        	echo "Listing remote packages";
+        "List All Remote apt Packages")
+        	listAllRemoteAptPackages
         	;;
 	"Back")
               return
@@ -189,7 +231,7 @@ aptQuery() {
 
 flatpakQuery() {
   local PS3='Please enter your choice: '
-  local options=("List All Installed Flatpak Packages" "Find Installed Flatpak Package (To Do)" "Search For Remote Flatpak Package (To Do)" "List All Remote Flatpak Packages (To Do)" "Back")
+  local options=("List All Installed Flatpak Packages" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Remote Flatpak Packages" "Back")
   local opt
   select opt in "${options[@]}"
   do
@@ -197,11 +239,14 @@ flatpakQuery() {
         "List All Installed Flatpak Packages")
         	listAllInstalledFlatpakPackages
         	;;
-        "Find Installed Flatpak Package (To Do)")
+        "Find Installed Flatpak Package")
+        	findInstalledFlatpakPackage
         	;;
-        "Search For Remote Flatpak Package (To Do)")
+        "Search For Remote Flatpak Package")
+        	findRemoteFlatpakPackage
         	;;
-        "List All Remote Flatpak Packages (To Do)")
+        "List All Remote Flatpak Packages")
+        	listAllRemoteFlatpakPackages
         	;;
 	"Back")
               return
