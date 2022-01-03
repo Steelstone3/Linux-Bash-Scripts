@@ -92,12 +92,6 @@ removeAptPackage() {
   sudo apt remove ${package}
 }
 
-listAllInstalledAptPackages() {
-  echo "Listing all installed apt packages"
-
-  apt list --installed
-}
-
 findInstalledAptPackage() {
   echo "Find an installed apt package"
   read -p "Enter search query: " searchQuery
@@ -110,6 +104,12 @@ findRemoteAptPackage() {
   read -p "Enter search query: " searchQuery
 
   apt list | grep ${searchQuery} --ignore-case --color=auto
+}
+
+listAllInstalledAptPackages() {
+  echo "Listing all installed apt packages"
+
+  apt list --installed
 }
 
 listAllRemoteAptPackages() {
@@ -132,12 +132,6 @@ uninstallFlatpakPackage() {
   flatpak uninstall ${package}
 }
 
-listAllInstalledFlatpakPackages() {
-  echo "Listing installed flatpak packages"
-
-  flatpak list
-}
-
 findInstalledFlatpakPackage() {
   echo "Find an installed flatpak package"
   read -p "Enter search query: " searchQuery
@@ -150,6 +144,12 @@ findRemoteFlatpakPackage() {
   read -p "Enter search query: " searchQuery
 
   flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto
+}
+
+listAllInstalledFlatpakPackages() {
+  echo "Listing installed flatpak packages"
+
+  flatpak list
 }
 
 listAllRemoteFlatpakPackages() {
@@ -229,7 +229,7 @@ performance() {
 
 aptQuery() {
   local PS3='Please enter your choice: '
-  local options=("Install An apt Package" "Remove An apt Package" "List All Installed apt Packages" "Find Installed apt Package" "Search For Remote apt Package" "List All Remote apt Packages" "Back")
+  local options=("Install An apt Package" "Remove An apt Package" "Find Installed apt Package" "Search For Remote apt Package" "List All Installed apt Packages" "List All Remote apt Packages" "Back")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -239,14 +239,14 @@ aptQuery() {
     "Remove An apt Package")
       removeAptPackage
       ;;
-    "List All Installed apt Packages")
-      listAllInstalledAptPackages
-      ;;
     "Find Installed apt Package")
       findInstalledAptPackage
       ;;
     "Search For Remote apt Package")
       findRemoteAptPackage
+      ;;
+    "List All Installed apt Packages")
+      listAllInstalledAptPackages
       ;;
     "List All Remote apt Packages")
       listAllRemoteAptPackages
@@ -261,7 +261,7 @@ aptQuery() {
 
 flatpakQuery() {
   local PS3='Please enter your choice: '
-  local options=("Install A Flatpak Package" "Uninstall A Flatpak Package" "List All Installed Flatpak Packages" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Remote Flatpak Packages" "Back")
+  local options=("Install A Flatpak Package" "Uninstall A Flatpak Package" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Installed Flatpak Packages" "List All Remote Flatpak Packages" "Back")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -271,14 +271,14 @@ flatpakQuery() {
     "Uninstall A Flatpak Package")
       uninstallFlatpakPackage
       ;;
-    "List All Installed Flatpak Packages")
-      listAllInstalledFlatpakPackages
-      ;;
     "Find Installed Flatpak Package")
       findInstalledFlatpakPackage
       ;;
     "Search For Remote Flatpak Package")
       findRemoteFlatpakPackage
+      ;;
+    "List All Installed Flatpak Packages")
+      listAllInstalledFlatpakPackages
       ;;
     "List All Remote Flatpak Packages")
       listAllRemoteFlatpakPackages
