@@ -68,6 +68,12 @@ aptRecovery() {
   sudo apt install --fix-missing
 }
 
+flatpakRepair() {
+  echo "Attempting to repair flatpak..."
+
+  flatpak repair
+}
+
 startupServices() {
   echo "Displaying CRITICAL chain of on boot starup services"
 
@@ -287,7 +293,7 @@ performance() {
 
 systemRecovery() {
   local PS3='Please enter your choice: '
-  local options=("Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Back")
+  local options=("Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Flatpak Repair" "Back")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -302,6 +308,9 @@ systemRecovery() {
       ;;
     "apt Recovery")
       aptRecovery
+      ;;
+    "Flatpak Repair")
+      flatpakRepair
       ;;
     "Back")
       return
