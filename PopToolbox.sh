@@ -78,6 +78,20 @@ startupServices() {
 	echo "To enable/disable services as daemons";
 }
 
+installAptPackage() {
+	echo "Install an apt package";
+	read -p "Enter package name to install: " package;
+	
+	sudo apt install ${package};
+}
+
+removeAptPackage() {
+	echo "Remove an apt package";
+	read -p "Enter package name to remove: " package;
+	
+	sudo apt remove ${package};
+}
+
 listAllInstalledAptPackages() {
 	echo "Listing all installed apt packages";
         	
@@ -102,6 +116,20 @@ listAllRemoteAptPackages() {
 	echo "Listing all remote apt packages";
 	
 	apt list | more
+}
+
+installFlatpakPackage() {
+	echo "Install a flatpak package";
+	read -p "Enter package name to install: " package;
+	
+	flatpak install ${package};
+}
+
+uninstallFlatpakPackage() {
+	echo "Install a flatpak package";
+	read -p "Enter package name to install: " package;
+	
+	flatpak uninstall ${package};
 }
 
 listAllInstalledFlatpakPackages() {
@@ -204,11 +232,17 @@ performance () {
 
 aptQuery() {
   local PS3='Please enter your choice: '
-  local options=("List All Installed apt Packages" "Find Installed apt Package" "Search For Remote apt Package" "List All Remote apt Packages" "Back")
+  local options=("Install An apt Package" "Remove An apt Package" "List All Installed apt Packages" "Find Installed apt Package" "Search For Remote apt Package" "List All Remote apt Packages" "Back")
   local opt
   select opt in "${options[@]}"
   do
       case $opt in
+      	"Install An apt Package")
+      		installAptPackage
+      		;;
+      	"Remove An apt Package")
+      		removeAptPackage
+      		;;
         "List All Installed apt Packages")
         	listAllInstalledAptPackages
         	;;
@@ -231,11 +265,17 @@ aptQuery() {
 
 flatpakQuery() {
   local PS3='Please enter your choice: '
-  local options=("List All Installed Flatpak Packages" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Remote Flatpak Packages" "Back")
+  local options=("Install A Flatpak Package" "Uninstall A Flatpak Package" "List All Installed Flatpak Packages" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Remote Flatpak Packages" "Back")
   local opt
   select opt in "${options[@]}"
   do
       case $opt in
+      	"Install A Flatpak Package")
+      		installFlatpakPackage
+      		;;
+      	"Uninstall A Flatpak Package")
+      		uninstallFlatpakPackage
+      		;;
         "List All Installed Flatpak Packages")
         	listAllInstalledFlatpakPackages
         	;;
