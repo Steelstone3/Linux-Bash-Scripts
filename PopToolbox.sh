@@ -184,49 +184,6 @@ systemManagement() {
   done
 }
 
-systemRecovery() {
-  local PS3='Please enter your choice: '
-  local options=("Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Back")
-  local opt
-  select opt in "${options[@]}"; do
-    case $opt in
-    "Kill Graphical Enviroment")
-      killGraphicalEnviroment
-      ;;
-    "Hard Reset Of Display Manager")
-      resetDisplayManager
-      ;;
-    "Reset Networking")
-      resetNetworking
-      ;;
-    "apt Recovery")
-      aptRecovery
-      ;;
-    "Back")
-      return
-      ;;
-    *) echo "invalid option $REPLY" ;;
-    esac
-  done
-}
-
-performance() {
-  local PS3='Please enter your choice: '
-  local options=("Check On Boot Startup Services" "Back")
-  local opt
-  select opt in "${options[@]}"; do
-    case $opt in
-    "Check On Boot Startup Services")
-      startupServices
-      ;;
-    "Back")
-      return
-      ;;
-    *) echo "invalid option $REPLY" ;;
-    esac
-  done
-}
-
 aptQuery() {
   local PS3='Please enter your choice: '
   local options=("Install An apt Package" "Remove An apt Package" "Find Installed apt Package" "Search For Remote apt Package" "List All Installed apt Packages" "List All Remote apt Packages" "Back")
@@ -311,22 +268,65 @@ packageQuery() {
   done
 }
 
+performance() {
+  local PS3='Please enter your choice: '
+  local options=("Check On Boot Startup Services" "Back")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Check On Boot Startup Services")
+      startupServices
+      ;;
+    "Back")
+      return
+      ;;
+    *) echo "invalid option $REPLY" ;;
+    esac
+  done
+}
+
+systemRecovery() {
+  local PS3='Please enter your choice: '
+  local options=("Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Back")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Kill Graphical Enviroment")
+      killGraphicalEnviroment
+      ;;
+    "Hard Reset Of Display Manager")
+      resetDisplayManager
+      ;;
+    "Reset Networking")
+      resetNetworking
+      ;;
+    "apt Recovery")
+      aptRecovery
+      ;;
+    "Back")
+      return
+      ;;
+    *) echo "invalid option $REPLY" ;;
+    esac
+  done
+}
+
 main() {
   PS3='Please enter your choice: '
-  options=("Pop_OS! Management" "Pop_OS! Recovery" "Pop_OS! Performance" "Pop_OS! Package Query" "Quit")
+  options=("Pop_OS! Management" "Pop_OS! Package Query" "Pop_OS! Performance" "Pop_OS! Recovery" "Quit")
   select opt in "${options[@]}"; do
     case $opt in
     "Pop_OS! Management")
       systemManagement
       ;;
-    "Pop_OS! Recovery")
-      systemRecovery
+    "Pop_OS! Package Query")
+      packageQuery
       ;;
     "Pop_OS! Performance")
       performance
       ;;
-    "Pop_OS! Package Query")
-      packageQuery
+    "Pop_OS! Recovery")
+      systemRecovery
       ;;
     "Quit")
       break
