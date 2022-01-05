@@ -166,10 +166,13 @@ listAllRemoteFlatpakPackages() {
 
 systemManagement() {
   local PS3='Please enter your choice: '
-  local options=("Pop_OS! Update System" "Pop_OS! Cleanup System" "Pop_OS! Upgrade To The Next OS Version" "Run Malware Scan" "Back")
+  local options=("Back" "Pop_OS! Update System" "Pop_OS! Cleanup System" "Pop_OS! Upgrade To The Next OS Version" "Run Malware Scan")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
+    "Back")
+      return
+      ;;
     "Pop_OS! Update System")
       updateSystem
       ;;
@@ -182,9 +185,6 @@ systemManagement() {
     "Run Malware Scan")
       malwareScan
       ;;
-    "Back")
-      return
-      ;;
     *) echo "invalid option $REPLY" ;;
     esac
   done
@@ -192,10 +192,13 @@ systemManagement() {
 
 aptQuery() {
   local PS3='Please enter your choice: '
-  local options=("Install An apt Package" "Remove An apt Package" "Find Installed apt Package" "Search For Remote apt Package" "List All Installed apt Packages" "List All Remote apt Packages" "Back")
+  local options=("Back" "Install An apt Package" "Remove An apt Package" "Find Installed apt Package" "Search For Remote apt Package" "List All Installed apt Packages" "List All Remote apt Packages")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
+    "Back")
+      return
+      ;;
     "Install An apt Package")
       installAptPackage
       ;;
@@ -214,9 +217,6 @@ aptQuery() {
     "List All Remote apt Packages")
       listAllRemoteAptPackages
       ;;
-    "Back")
-      return
-      ;;
     *) echo "invalid option $REPLY" ;;
     esac
   done
@@ -224,10 +224,13 @@ aptQuery() {
 
 flatpakQuery() {
   local PS3='Please enter your choice: '
-  local options=("Install A Flatpak Package" "Uninstall A Flatpak Package" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Installed Flatpak Packages" "List All Remote Flatpak Packages" "Back")
+  local options=("Back" "Install A Flatpak Package" "Uninstall A Flatpak Package" "Find Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Installed Flatpak Packages" "List All Remote Flatpak Packages")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
+    "Back")
+      return
+      ;;
     "Install A Flatpak Package")
       installFlatpakPackage
       ;;
@@ -246,9 +249,6 @@ flatpakQuery() {
     "List All Remote Flatpak Packages")
       listAllRemoteFlatpakPackages
       ;;
-    "Back")
-      return
-      ;;
     *) echo "invalid option $REPLY" ;;
     esac
   done
@@ -256,18 +256,18 @@ flatpakQuery() {
 
 packageQuery() {
   local PS3='Please enter your choice: '
-  local options=("apt Package Querying" "Flatpak Package Querying" "Back")
+  local options=("Back" "apt Package Querying" "Flatpak Package Querying")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
+    "Back")
+      return
+      ;;
     "apt Package Querying")
       aptQuery
       ;;
     "Flatpak Package Querying")
       flatpakQuery
-      ;;
-    "Back")
-      return
       ;;
     *) echo "invalid option $REPLY" ;;
     esac
@@ -276,15 +276,15 @@ packageQuery() {
 
 performance() {
   local PS3='Please enter your choice: '
-  local options=("Check On Boot Startup Services" "Back")
+  local options=("Back" "Check On Boot Startup Services")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
-    "Check On Boot Startup Services")
-      startupServices
-      ;;
     "Back")
       return
+      ;;
+    "Check On Boot Startup Services")
+      startupServices
       ;;
     *) echo "invalid option $REPLY" ;;
     esac
@@ -293,10 +293,13 @@ performance() {
 
 systemRecovery() {
   local PS3='Please enter your choice: '
-  local options=("Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Flatpak Repair" "Back")
+  local options=("Back" "Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Flatpak Repair")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
+    "Back")
+      return
+      ;;
     "Kill Graphical Enviroment")
       killGraphicalEnviroment
       ;;
@@ -312,9 +315,6 @@ systemRecovery() {
     "Flatpak Repair")
       flatpakRepair
       ;;
-    "Back")
-      return
-      ;;
     *) echo "invalid option $REPLY" ;;
     esac
   done
@@ -322,9 +322,12 @@ systemRecovery() {
 
 main() {
   PS3='Please enter your choice: '
-  options=("Pop_OS! Management" "Pop_OS! Package Query" "Pop_OS! Performance" "Pop_OS! Recovery" "Quit")
+  options=("Quit" "Pop_OS! Management" "Pop_OS! Package Query" "Pop_OS! Performance" "Pop_OS! Recovery")
   select opt in "${options[@]}"; do
     case $opt in
+    "Quit")
+      break
+      ;;
     "Pop_OS! Management")
       systemManagement
       ;;
@@ -336,9 +339,6 @@ main() {
       ;;
     "Pop_OS! Recovery")
       systemRecovery
-      ;;
-    "Quit")
-      break
       ;;
     *) echo "invalid option $REPLY" ;;
     esac
