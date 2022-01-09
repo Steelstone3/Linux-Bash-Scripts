@@ -14,6 +14,7 @@ cleanupSystem() {
   echo "Cleaning up Fedora"
 
   sudo yum erase
+  sudo yum clean all
 
   flatpak uninstall --unused --delete-data
 }
