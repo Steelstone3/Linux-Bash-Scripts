@@ -3,15 +3,26 @@ Linux Toolbox
 
 ### About The Project
 
-Contained within this repository are various useful bash scripts primarily for Pop-OS. Changes are coming to this project to include several all in one tools for popular linux distributions mainly Fedora, Pop_OS! and others upon request.
+Linux Toolbox as an application presents a menu . Each "Toolbox" contains a bag of commonly used commands for maintaining Debain, Arch and RHEL based systems.
+
+### Currently Supported
+
+- Pop_OS!
+- Fedora (Work in progress)
 
 ### Usage
 
-Each "Toolbox" contains a bag of commonly used commands for maintaining Debain, Arch and RHEL based systems
+> cd ./Linux-Toolbox
 
-The 1 key is used to go back/ quit
+Then use the following commands for your OS
 
-The remaining options are presented as follows below...
+*Pop_OS!*
+
+> bash PopToolbox
+
+*Fedora*
+
+> bash FedoraToolbox
 
 ### OS Maintainance
 
