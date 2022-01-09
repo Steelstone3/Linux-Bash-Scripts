@@ -12,6 +12,8 @@ Linux Toolbox as an application presents a menu . Each "Toolbox" contains a bag 
 
 ### Usage
 
+Change directory to the root of where the scripts are stored
+
 > cd ./Linux-Toolbox
 
 Then use the following commands for your OS
