@@ -1,9 +1,6 @@
 Linux Bash Scripts
 ==================
 
-
-
-# About This Project
 Contained within this repository are various useful bash scripts primarily for Pop-OS. Changes are coming to this project to include several all in one tools for popular linux distributions mainly Fedora, Pop_OS! and others upon request.
 
 # Usage
