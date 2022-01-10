@@ -46,18 +46,14 @@ resetDisplayManager() {
 resetNetworking() {
   echo "Restarting the networking service"
 
-#  sudo systemctl restart networking NEED TO WORK OUT WHAT SERVICE TO RESTART
+  sudo systemctl restart NetworkManager.service
 }
 
 rpmRecovery() {
   echo "Attempting to recover rpm..."
 
-  cd /var/lib
-  rm __db*
-  rpm --rebuilddb
-  rpmdb_verify Packages
-  
-  rpm -Va
+  sudo rpm --rebuilddb
+  sudo rpm -Va
 }
 
 flatpakRepair() {
@@ -285,7 +281,7 @@ performance() {
 
 systemRecovery() {
   local PS3='Please enter your choice: '
-  local options=("Back" "Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking (WIP)" "rpm Recovery (WIP)" "Flatpak Repair")
+  local options=("Back" "Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "rpm Recovery" "Flatpak Repair")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -298,10 +294,10 @@ systemRecovery() {
     "Hard Reset Of Display Manager")
       resetDisplayManager
       ;;
-    "Reset Networking (WIP)")
+    "Reset Networking")
       resetNetworking
       ;;
-    "rpm Recovery (WIP)")
+    "rpm Recovery")
       rpmRecovery
       ;;
     "Flatpak Repair")
