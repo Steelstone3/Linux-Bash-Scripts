@@ -5,7 +5,7 @@ echo "Welcome to Fedora Toolbox please select an option"
 updateSystem() {
   echo "Updating packages"
 
-  sudo yum update
+  sudo dnf update
 
   flatpak update
 }
@@ -13,8 +13,8 @@ updateSystem() {
 cleanupSystem() {
   echo "Cleaning up Fedora"
 
-  sudo yum erase
-  sudo yum clean all
+  sudo dnf autoremove
+  sudo dnf clean all
 
   flatpak uninstall --unused --delete-data
 }
@@ -26,7 +26,7 @@ upgradeSystem() {
 malwareScan() {
   echo "Running chkrootkit package"
 
-  sudo yum install chkrootkit
+  sudo dnf install chkrootkit
 
   sudo chkrootkit
 }
@@ -50,14 +50,14 @@ resetNetworking() {
 }
 
 rpmRecovery() {
-  echo "Attempting to recover rpm..." #Need to work out basic recovery script
+  echo "Attempting to recover rpm..."
 
-#Need the rpm version of this
-
-  #sudo dpkg --configure -a
-  #sudo apt update
-  #sudo apt install --fix-broken
-  #sudo apt install --fix-missing
+  cd /var/lib
+  rm __db*
+  rpm --rebuilddb
+  rpmdb_verify Packages
+  
+  rpm -Va
 }
 
 flatpakRepair() {
@@ -80,40 +80,40 @@ installRpmPackage() {
   echo "Install an rpm package"
   read -p "Enter package name to install: " package
 
-  sudo yum install ${package}
+  sudo dnf install ${package}
 }
 
 removeRpmPackage() {
   echo "Remove an rpm package"
   read -p "Enter package name to remove: " package
 
-  sudo yum remove ${package}
+  sudo dnf remove ${package}
 }
 
 findInstalledRpmPackage() {
   echo "Find an installed rpm package"
   read -p "Enter search query: " searchQuery
 
-  yum list --installed | grep ${searchQuery} --ignore-case --color=auto #Doesn't work
+  rpm -q ${searchQuery}
 }
 
 findRemoteRpmPackage() {
   echo "Find an installed apt package"
   read -p "Enter search query: " searchQuery
 
-  rpm list | grep ${searchQuery} --ignore-case --color=auto #Doesn't work
+  dnf search all ${searchQuery}
 }
 
 listAllInstalledRpmPackages() {
   echo "Listing all installed apt packages"
 
-  rpm list --installed #Doesn't work
+  rpm -qa | sort -V
 }
 
 listAllRemoteRpmPackages() {
   echo "Listing all remote apt packages"
 
-  rpm list | more #Doesn't work
+  dnf search all * | sort -V | more
 }
 
 installFlatpakPackage() {
@@ -184,7 +184,7 @@ systemManagement() {
 
 rpmQuery() {
   local PS3='Please enter your choice: '
-  local options=("Back" "Install An rpm Package" "Remove An rpm Package" "Find Installed rpm Package (WIP)" "Search For Remote rpm Package (WIP)" "List All Installed rpm Packages (WIP)" "List All Remote rpm Packages (WIP)")
+  local options=("Back" "Install An rpm Package" "Remove An rpm Package" "Find Installed rpm Package" "Search For Remote rpm Package" "List All Installed rpm Packages" "List All Remote rpm Packages")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -197,16 +197,16 @@ rpmQuery() {
     "Remove An rpm Package")
       removeRpmPackage
       ;;
-    "Find Installed rpm Package (WIP)")
-      findInstalledAptPackage
+    "Find Installed rpm Package")
+      findInstalledRpmPackage
       ;;
-    "Search For Remote rpm Package (WIP)")
+    "Search For Remote rpm Package")
       findRemoteRpmPackage
       ;;
-    "List All Installed rpm Packages (WIP)")
+    "List All Installed rpm Packages")
       listAllInstalledRpmPackages
       ;;
-    "List All Remote rpm Packages (WIP)")
+    "List All Remote rpm Packages")
       listAllRemoteRpmPackages
       ;;
     *) echo "invalid option $REPLY" ;;
