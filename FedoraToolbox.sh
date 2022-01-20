@@ -94,7 +94,7 @@ findInstalledRpmPackage() {
 }
 
 findRemoteRpmPackage() {
-  echo "Find an installed apt package"
+  echo "Find a remote rpm package"
   read -p "Enter search query: " searchQuery
 
   dnf search all ${searchQuery}
