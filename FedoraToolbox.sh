@@ -101,13 +101,13 @@ findRemoteRpmPackage() {
 }
 
 listAllInstalledRpmPackages() {
-  echo "Listing all installed apt packages"
+  echo "Listing all installed rpm packages"
 
   rpm -qa | sort -V
 }
 
 listAllRemoteRpmPackages() {
-  echo "Listing all remote apt packages"
+  echo "Listing all remote rpm packages"
 
   dnf search all * | sort -V | more
 }
