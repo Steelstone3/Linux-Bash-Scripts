@@ -106,7 +106,7 @@ findInstalledAptPackage() {
 }
 
 findRemoteAptPackage() {
-  echo "Find an installed apt package"
+  echo "Find an remote apt package"
   read -p "Enter search query: " searchQuery
 
   apt list | grep ${searchQuery} --ignore-case --color=auto
@@ -133,7 +133,7 @@ installFlatpakPackage() {
 
 uninstallFlatpakPackage() {
   echo "Uninstall a flatpak package"
-  read -p "Enter package name to install: " package
+  read -p "Enter package name to uninstall: " package
 
   flatpak uninstall ${package}
 }
