@@ -1,5 +1,19 @@
 #!/bin/bash
 
+echo "     .:~!77??777!~:.     
+   .~77!~^^~!?????77~.   
+  ~7?~. .:   ^77?????7~  
+ !??7.  :?!.  ~?7~~777?! 
+~?77?7:  :!. .!7.  ^?77?~
+77777?7:   .^7?!  :777777
+777777?7^  ~???! ^7?77777
+~?77777??^  !?7!!??7777?~
+ !?777?77?!:~?7:!??777?! 
+  ~7?7:...:::.:::.:7?7~  
+   .~7!!!!!!!!!!!!!7~.   
+     .:~!77???77!~:.     
+"
+
 echo "Welcome to Pop_OS! Toolbox please select an option"
 
 #alias update_linux='sudo apt update; apt list --upgradeable; sudo apt upgrade; sudo apt autopurge; sudo apt purge ~c; sudo apt autoclean; flatpak update; flatpak uninstall --unused --delete-data; flatpak repair; sudo chkrootkit';
