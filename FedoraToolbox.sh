@@ -1,24 +1,29 @@
 #!/bin/bash
 
-echo "                        .....                     
-                   .^7Y5PPGGP5J7^                 
-                 :?PGBGGGG5?!~~7P57.              
-                7GBGGGGGP~  ^!~!Y5GP~             
-               ?BGGGGGGB! .YGBBGPYYGG~            
-              ^GGGGGGBBB~ :GBBGGPYYPGP.           
-              !BGGPP5!~~. .~~!J5Y5PGGG:           
-              !BP5Y5Y!~~. .~~~JPPGGGGP.           
-              !G5Y5GGBBB~ :GBBGGGGGGB7            
-              !G5YPGBBBP: ^GGGGGGGGG?             
-              7BP5Y7!!~. ^5GGGGGBGY~              
-              ^PGGG?~~~7YGBGGGPY7:                
-               .^~~~~~~~~~~~^:.                   
-       .^^             :.                         
-      ^J!^             Y7                         
-     ~JY!. ~!!!^  .!7!~Y7 .!!!!: :7~!~ ^!!!~.     
-     .7Y:.?Y~~!Y~.Y7..^Y!.Y!..^Y^~5~..7J:..??     
-      7Y  ?J~^~7:.Y7:.^57.Y!..~Y:~5.  7J^.:?Y.    
-      ^~   ^!!~^  .~!!~!^ .~!!~. :!.   ^!!~~~.    
+BLUE='\033[0;34m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+
+echo -e "               
+             ${BLUE}.',;::::;,'.                
+         .';:cccccccccccc:;,.           
+      .;cccccccccccccccccccccc;.         
+    .:cccccccccccccccccccccccccc:.       
+  .;ccccccccccccc;${WHITE}.:dddl:.${BLUE};ccccccc;.    
+ .:ccccccccccccc;${WHITE}OWMKOOXMWd${BLUE};ccccccc:.    
+.:ccccccccccccc;${WHITE}KMMc${BLUE};cc;${WHITE}xMMc${BLUE}:ccccccc:.   
+,cccccccccccccc;${WHITE}MMM.${BLUE};cc;${WHITE};WW:${BLUE}:cccccccc,   
+:cccccccccccccc;${WHITE}MMM.${BLUE};cccccccccccccccc:   
+:ccccccc;${WHITE}oxOOOo${BLUE};${WHITE}MMM0OOk.${BLUE};cccccccccccc:   
+cccccc:${WHITE}0MMKxdd:${BLUE};${WHITE}MMMkddc.${BLUE};cccccccccccc;   
+ccccc:${WHITE}XM0'${BLUE};cccc;${WHITE}MMM.${BLUE};cccccccccccccccc'   
+ccccc;${WHITE}MMo;${BLUE}ccccc;${WHITE}MMW.${BLUE};ccccccccccccccc;    
+ccccc;${WHITE}0MNc.${BLUE}ccc${WHITE}.xMMd${BLUE}:ccccccccccccccc;     
+cccccc;${WHITE}dNMWXXXWM0:${BLUE}:cccccccccccccc:,       
+cccccccc;${WHITE}.:odl:.${BLUE};cccccccccccccc:,.      
+:cccccccccccccccccccccccccccc:'.        
+.:cccccccccccccccccccccc:;,..            
+  '::cccccccccccccc::;,.${NC} 
 "
 
 echo "Welcome to Fedora Toolbox please select an option"
