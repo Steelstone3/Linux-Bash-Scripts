@@ -28,10 +28,6 @@ echo -e "             ${CYAN}/////////////
 
 echo "Welcome to Pop_OS! Toolbox please select an option"
 
-#alias update_linux='sudo apt update; apt list --upgradeable; sudo apt upgrade; sudo apt autopurge; sudo apt purge ~c; sudo apt autoclean; flatpak update; flatpak uninstall --unused --delete-data; flatpak repair; sudo chkrootkit';
-
-#echo "update_linux alias added to your system. This will run a series of commands to update and clean your system.";
-
 updateSystem() {
   echo "Updating packages"
 
@@ -101,7 +97,7 @@ flatpakRecovery() {
 
   echo "Adding Repositories"
 
-  flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
