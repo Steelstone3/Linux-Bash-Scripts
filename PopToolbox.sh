@@ -94,6 +94,17 @@ aptRecovery() {
   sudo apt install --fix-missing
 }
 
+flatpakRecovery() {  
+  echo "Installing flatpak"
+
+  sudo apt install flatpak
+
+  echo "Adding Repositories"
+
+  flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+}
+
 flatpakRepair() {
   echo "Attempting to repair flatpak..."
 
@@ -319,7 +330,7 @@ performance() {
 
 systemRecovery() {
   local PS3='Please enter your choice: '
-  local options=("Back" "Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Flatpak Repair")
+  local options=("Back" "Kill Graphical Enviroment" "Hard Reset Of Display Manager" "Reset Networking" "apt Recovery" "Flatpak Recovery" "Flatpak Repair")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -337,6 +348,9 @@ systemRecovery() {
       ;;
     "apt Recovery")
       aptRecovery
+      ;;
+    "Flatpak Recovery")
+      flatpakRecovery
       ;;
     "Flatpak Repair")
       flatpakRepair
