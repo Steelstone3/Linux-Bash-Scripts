@@ -97,8 +97,8 @@ flatpakRecovery() {
 
   echo "Adding Repositories"
 
-  #flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 flatpakRepair() {
