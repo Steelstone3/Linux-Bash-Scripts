@@ -47,6 +47,14 @@ cleanupSystem() {
 
 upgradeSystem() {
   echo "Upgrading to the latest Fedora version"
+  sudo dnf upgrade --refresh
+  sudo dnf install dnf-plugin-system-upgrade
+  
+  CURRENT_FEDORA_VERSION=$(cat /etc/fedora-release | tr -dc '0-9')
+  NEXT_FEDORA_VERSION=$(($CURRENT_FEDORA_VERSION + 1))
+  
+  echo "Next Fedora Version:" $NEXT_FEDORA_VERSION
+  sudo dnf system-upgrade download --releasever=$NEXT_FEDORA_VERSION
 }
 
 malwareScan() {
@@ -180,7 +188,7 @@ listAllRemoteFlatpakPackages() {
 
 systemManagement() {
   local PS3='Please enter your choice: '
-  local options=("Back" "Fedora Update System" "Fedora Cleanup System" "Fedora Upgrade To The Next OS Version (WIP)" "Run Malware Scan")
+  local options=("Back" "Fedora Update System" "Fedora Cleanup System" "Fedora Upgrade To The Next OS Version" "Run Malware Scan")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -193,7 +201,7 @@ systemManagement() {
     "Fedora Cleanup System")
       cleanupSystem
       ;;
-    "Fedora Upgrade To The Next OS Version (WIP)")
+    "Fedora Upgrade To The Next OS Version")
       upgradeSystem
       ;;
     "Run Malware Scan")
