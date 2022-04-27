@@ -7,6 +7,8 @@ Linux Toolbox as an application presents a menu . Each "Toolbox" contains a bag 
 
 ### Currently Supported
 
+- Ubuntu (Soon)
+- Debain (Soon)
 - Pop_OS!
 - Fedora
 - Manjaro (Soon)
