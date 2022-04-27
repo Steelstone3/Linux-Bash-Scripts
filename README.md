@@ -8,7 +8,8 @@ Linux Toolbox as an application presents a menu . Each "Toolbox" contains a bag 
 ### Currently Supported
 
 - Pop_OS!
-- Fedora (Work in progress)
+- Fedora
+- Manjaro (Soon)
 
 ### Usage
 
