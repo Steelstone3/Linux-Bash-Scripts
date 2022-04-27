@@ -55,6 +55,12 @@ upgradeSystem() {
   
   echo "Next Fedora Version:" $NEXT_FEDORA_VERSION
   sudo dnf system-upgrade download --releasever=$NEXT_FEDORA_VERSION
+  reboot
+}
+
+reboot() {
+  read -p "Reboot and upgrade system? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || return
+  sudo reboot
 }
 
 malwareScan() {

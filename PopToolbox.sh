@@ -53,6 +53,12 @@ upgradeSystem() {
   sudo apt update
   sudo apt full-upgrade
   pop-upgrade release upgrade
+  reboot
+}
+
+reboot() {
+  read -p "Reboot and upgrade system? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || return
+  sudo reboot
 }
 
 malwareScan() {
@@ -195,6 +201,16 @@ listAllRemoteFlatpakPackages() {
   echo "Listing all remote flatpak packages"
 
   flatpak remote-ls | more
+}
+
+restrictHosts() {
+  sudo bash -c 'curl https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts > /etc/hosts' 
+}
+
+defaultHosts() {
+  sudo bash -c 'echo "127.0.0.1	localhost
+::1		localhost
+127.0.1.1	pop-os.localdomain	pop-os" > /etc/hosts'
 }
 
 systemManagement() {
@@ -356,9 +372,28 @@ systemRecovery() {
   done
 }
 
+hosts() {
+  PS3='Please enter your choice: '
+  options=("Back" "Restrict Hosts File" "Pop_OS! Default Hosts File")
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "Restrict Hosts File")
+      restrictHosts
+      ;;
+    "Pop_OS! Default Hosts File")
+      defaultHosts
+      ;;
+    *) echo "invalid option $REPLY" ;;
+    esac
+  done
+}
+
 main() {
   PS3='Please enter your choice: '
-  options=("Quit" "Pop_OS! Management" "Pop_OS! Package Query" "Pop_OS! Performance" "Pop_OS! Recovery")
+  options=("Quit" "Pop_OS! Management" "Pop_OS! Package Query" "Pop_OS! Performance" "Pop_OS! Recovery" "Pop_OS! Hosts")
   select opt in "${options[@]}"; do
     case $opt in
     "Quit")
@@ -375,6 +410,9 @@ main() {
       ;;
     "Pop_OS! Recovery")
       systemRecovery
+      ;;
+    "Pop_OS! Hosts")
+      hosts
       ;;
     *) echo "invalid option $REPLY" ;;
     esac
