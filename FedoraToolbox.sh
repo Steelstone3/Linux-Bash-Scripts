@@ -47,6 +47,13 @@ cleanupSystem() {
 
 upgradeSystem() {
   echo "Upgrading to the latest Fedora version"
+  
+  checkUpgrade
+  checkReboot
+}
+
+checkUpgrade() {
+  read -p "Are you sure? Type - I am sure: " confirm && [[ $confirm == [iI][" "][aA][mM][" "][sS][uU][rR][eE] ]] || return
   sudo dnf upgrade --refresh
   sudo dnf install dnf-plugin-system-upgrade
   
@@ -55,10 +62,9 @@ upgradeSystem() {
   
   echo "Next Fedora Version:" $NEXT_FEDORA_VERSION
   sudo dnf system-upgrade download --releasever=$NEXT_FEDORA_VERSION
-  reboot
 }
 
-reboot() {
+checkReboot() {
   read -p "Reboot and upgrade system? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || return
   sudo reboot
 }

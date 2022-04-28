@@ -50,13 +50,18 @@ cleanupSystem() {
 upgradeSystem() {
   echo "Upgrading to the latest Pop_OS! version"
 
+  checkUpgrade
+  checkReboot
+}
+
+checkUpgrade() {
+  read -p "Are you sure? Type - I am sure: " confirm && [[ $confirm == [iI][" "][aA][mM][" "][sS][uU][rR][eE] ]] || return
   sudo apt update
   sudo apt full-upgrade
   pop-upgrade release upgrade
-  reboot
 }
 
-reboot() {
+checkReboot() {
   read -p "Reboot and upgrade system? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || return
   sudo reboot
 }
