@@ -66,7 +66,7 @@ checkUpgrade() {
 
 checkReboot() {
   read -p "Reboot and upgrade system? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || return
-  sudo reboot
+  sudo dnf system-upgrade reboot
 }
 
 malwareScan() {
