@@ -7,6 +7,18 @@ POP_OS='Pop_OS'
 FEDORA='Fedora'
 MANJARO='Manjaro'
 
+has_apt() {
+  [ -x "$(command -v apt)" ]
+}
+
+has_dnf() {
+  [ -x "$(command -v dnf)" ]
+}
+
+has_pacman() {
+  [ -x "$(command -v pacman)" ]
+}
+
 display_pop_welcome_message() {
   CYAN='\033[0;36m'
   WHITE='\033[1;37m'
@@ -115,14 +127,14 @@ update_system() {
   if [ -x "$(command -v flatpak)" ]; then
     sudo flatpak update
   fi
-  if [ -x "$(command -v apt)" ]; then
+  if has_apt; then
     sudo apt update
     sudo apt upgrade
     return
-  elif [ -x "$(command -v dnf)" ]; then
+  elif has_dnf; then
     sudo dnf update --refresh
     return
-  elif [ -x "$(command -v pacman)" ]; then
+  elif has_pacman; then
     sudo pacman -Syyu
     return
   fi
@@ -134,15 +146,15 @@ cleanup_system() {
   if [ -x "$(command -v flatpak)" ]; then
     sudo flatpak uninstall --unused --delete-data
   fi
-  if [ -x "$(command -v apt)" ]; then
+  if has_apt; then
     sudo apt autopurge
     sudo apt autoclean
     return
-  elif [ -x "$(command -v dnf)" ]; then
+  elif has_dnf; then
     sudo dnf autoremove
     sudo dnf clean all
     return
-  elif [ -x "$(command -v pacman)" ]; then
+  elif has_pacman; then
     sudo pacman -Rs
     return
   fi
@@ -201,7 +213,19 @@ system_package_querying() {
 }
 
 install_system_package() {
-  echo "Function needs implementing"
+  echo "Install a system package"
+  read -p "Enter package name to install: " package
+
+  if has_apt; then
+    sudo apt install ${package}
+    return
+  elif has_dnf; then
+    sudo dnf install ${package}
+    return
+  elif has_pacman; then
+    sudo pacman -S ${package}
+    return
+  fi
 }
 
 remove_system_package() {
@@ -280,11 +304,15 @@ list_all_remote_flatpak_packages() {
   echo "Function needs implementing"
 }
 
+system_recovery() {
+  echo "Function needs implementing"
+}
+
 main() {
   display_os_welcome_message
 
   PS3=$OPTIONS_MESSAGE
-  options=("Quit" "OS Management" "OS Package Query" "OS Recovery")
+  options=("Quit" "OS Management" "OS Package Querying" "OS Recovery")
   select opt in "${options[@]}"; do
     case $opt in
     "Quit")
@@ -297,7 +325,7 @@ main() {
       package_querying
       ;;
     "OS Recovery")
-      #        system_recovery
+      system_recovery
       ;;
     *) echo "$INVALID_OPTION $REPLY" ;;
     esac
