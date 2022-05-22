@@ -5,9 +5,9 @@ FEDORA='Fedora'
 MANJARO='Manjaro'
 
 display_pop_welcome_message() {
-      CYAN='\033[0;36m'
-      WHITE='\033[1;37m'
-      NC='\033[0m' # No Color
+  CYAN='\033[0;36m'
+  WHITE='\033[1;37m'
+  NC='\033[0m' # No Color
 
   echo -e "             ${CYAN}/////////////
            /////////////////////
@@ -39,7 +39,7 @@ display_fedora_welcome_message() {
   WHITE='\033[1;37m'
   NC='\033[0m' # No Color
 
-echo -e "
+  echo -e "
              ${BLUE}.',;::::;,'.
          .';:cccccccccccc:;,.
       .;cccccccccccccccccccccc;.
@@ -70,40 +70,102 @@ determine_os() {
 
 display_os_welcome_message() {
   case $OPERATING_SYSTEM in
-    *"$POP_OS"*)
-      display_pop_welcome_message
-      return
-      ;;
-    *"$FEDORA"*)
-      display_fedora_welcome_message
-      return
-      ;;
-    *) echo "Unsupported OS" ;;
+  *"$POP_OS"*)
+    display_pop_welcome_message
+    return
+    ;;
+  *"$FEDORA"*)
+    display_fedora_welcome_message
+    return
+    ;;
+  *) echo "Unsupported OS" ;;
   esac
+}
+
+update_system() {
+  echo "Updating System"
+
+  if [ -x "$(command -v flatpak)" ]; then
+    sudo flatpak update
+  fi
+  if [ -x "$(command -v apt)" ]; then
+    sudo apt update
+    sudo apt upgrade
+    return
+  elif [ -x "$(command -v dnf)" ]; then
+    sudo dnf update
+    return
+  elif [ -x "$(command -v pacman)" ]; then
+    sudo pacman -Syyu
+    return
+  fi
+}
+
+cleanup_system() {
+  echo "Cleaning System"
+
+  if [ -x "$(command -v flatpak)" ]; then
+    sudo flatpak uninstall --unused --delete-data
+  fi
+  if [ -x "$(command -v apt)" ]; then
+    sudo apt autopurge
+    sudo apt autoclean
+    return
+  elif [ -x "$(command -v dnf)" ]; then
+    sudo dnf autoremove
+    sudo dnf clean all
+    return
+  elif [ -x "$(command -v pacman)" ]; then
+    sudo pacman -Rs
+    return
+  fi
+}
+
+system_management() {
+  local PS3='Please enter your choice: '
+  local options=("Back" "System Update" "System Cleanup" "System Upgrade To The Next OS Version")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "System Update")
+      update_system
+      ;;
+    "System Cleanup")
+      cleanup_system
+      ;;
+    "System Upgrade To The Next OS Version")
+      #        upgrade_system_to_next_release
+      ;;
+    *) echo "invalid option $REPLY" ;;
+    esac
+  done
 }
 
 main() {
   display_os_welcome_message
 
   PS3='Please enter your choice: '
-    options=("Quit" "OS Management" "OS Package Query" "OS Recovery")
-    select opt in "${options[@]}"; do
-      case $opt in
-      "Quit")
-        break
-        ;;
-      "OS Management")
-#        system_management
-        ;;
-      "OS Package Query")
-#        package_query
-        ;;
-      "OS Recovery")
-#        system_recovery
-        ;;
-      *) echo "Invalid option $REPLY" ;;
-      esac
-    done
+  options=("Quit" "OS Management" "OS Package Query" "OS Recovery")
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Quit")
+      break
+      ;;
+    "OS Management")
+      system_management
+      ;;
+    "OS Package Query")
+      #        package_query
+      ;;
+    "OS Recovery")
+      #        system_recovery
+      ;;
+    *) echo "Invalid option $REPLY" ;;
+    esac
+  done
 }
 
 main
