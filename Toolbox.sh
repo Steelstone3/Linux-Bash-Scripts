@@ -1,3 +1,6 @@
+OPTIONS_MESSAGE='Please enter your choice: '
+INVALID_OPTION='Invalid option'
+
 DEBAIN='Debain'
 UBUNTU='Ubuntu'
 POP_OS='Pop_OS'
@@ -83,7 +86,7 @@ display_os_welcome_message() {
 }
 
 system_management() {
-  local PS3='Please enter your choice: '
+  local PS3=$OPTIONS_MESSAGE
   local options=("Back" "System Update" "System Cleanup" "System Upgrade To The Next OS Version")
   local opt
   select opt in "${options[@]}"; do
@@ -99,8 +102,9 @@ system_management() {
       ;;
     "System Upgrade To The Next OS Version")
       #      upgrade_system_to_next_release
+      echo "Currently not supported"
       ;;
-    *) echo "invalid option $REPLY" ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
     esac
   done
 }
@@ -145,7 +149,7 @@ cleanup_system() {
 }
 
 package_querying() {
-  local PS3='Please enter your choice: '
+  local PS3=$OPTIONS_MESSAGE
   local options=("Back" "System Package Querying" "Flatpak Package Querying")
   local opt
   select opt in "${options[@]}"; do
@@ -159,15 +163,127 @@ package_querying() {
     "Flatpak Package Querying")
       flatpak_querying
       ;;
-    *) echo "invalid option $REPLY" ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
     esac
   done
+}
+
+system_package_querying() {
+  local PS3=$OPTIONS_MESSAGE
+  local options=("Back" "Install A System Package" "Remove A System Package" "Find An Installed System Package" "Search For A Remote System Package" "List All Installed System Packages" "List All Remote System Packages")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "Install A System Package")
+      install_system_package
+      ;;
+    "Remove A System Package")
+      remove_system_package
+      ;;
+    "Find An Installed System Package")
+      find_installed_system_package
+      ;;
+    "Search For A Remote System Package")
+      find_remote_system_package
+      ;;
+    "List All Installed System Packages")
+      list_all_installed_system_packages
+      ;;
+    "List All Remote System Packages")
+      list_all_remote_system_packages
+      ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
+    esac
+  done
+}
+
+install_system_package() {
+  echo "Function needs implementing"
+}
+
+remove_system_package() {
+  echo "Function needs implementing"
+}
+
+find_installed_system_package() {
+  echo "Function needs implementing"
+}
+
+find_remote_system_package() {
+  echo "Function needs implementing"
+}
+
+list_all_installed_system_packages() {
+  echo "Function needs implementing"
+}
+
+list_all_remote_system_packages() {
+  echo "Function needs implementing"
+}
+
+flatpak_querying() {
+  local PS3=$OPTIONS_MESSAGE
+  local options=("Back" "Install A Flatpak Package" "Uninstall A Flatpak Package" "Find An Installed Flatpak Package" "Search For Remote Flatpak Package" "List All Installed Flatpak Packages" "List All Remote Flatpak Packages")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "Install A Flatpak Package")
+      install_flatpak_package
+      ;;
+    "Uninstall A Flatpak Package")
+      uninstall_flatpak_package
+      ;;
+    "Find An Installed Flatpak Package")
+      find_installed_flatpak_package
+      ;;
+    "Search For Remote Flatpak Package")
+      find_remote_flatpak_package
+      ;;
+    "List All Installed Flatpak Packages")
+      list_all_installed_flatpak_packages
+      ;;
+    "List All Remote Flatpak Packages")
+      list_all_remote_flatpak_packages
+      ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
+    esac
+  done
+}
+
+install_flatpak_package() {
+  echo "Function needs implementing"
+}
+
+uninstall_flatpak_package() {
+  echo "Function needs implementing"
+}
+
+find_installed_flatpak_package() {
+  echo "Function needs implementing"
+}
+
+find_remote_flatpak_package() {
+  echo "Function needs implementing"
+}
+
+list_all_installed_flatpak_packages() {
+  echo "Function needs implementing"
+}
+
+list_all_remote_flatpak_packages() {
+  echo "Function needs implementing"
 }
 
 main() {
   display_os_welcome_message
 
-  PS3='Please enter your choice: '
+  PS3=$OPTIONS_MESSAGE
   options=("Quit" "OS Management" "OS Package Query" "OS Recovery")
   select opt in "${options[@]}"; do
     case $opt in
@@ -183,7 +299,7 @@ main() {
     "OS Recovery")
       #        system_recovery
       ;;
-    *) echo "Invalid option $REPLY" ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
     esac
   done
 }
