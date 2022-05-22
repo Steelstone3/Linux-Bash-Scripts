@@ -65,7 +65,7 @@ cccccccc;${WHITE}.:odl:.${BLUE};cccccccccccccc:,.
 }
 
 determine_os() {
-  OPERATING_SYSTEM=echo cat /etc/*-release | grep "pretty_name" --ignore-case
+  OPERATING_SYSTEM=$(cat /etc/*-release | grep "pretty_name" --ignore-case)
 }
 
 display_os_welcome_message() {
@@ -82,6 +82,29 @@ display_os_welcome_message() {
   esac
 }
 
+system_management() {
+  local PS3='Please enter your choice: '
+  local options=("Back" "System Update" "System Cleanup" "System Upgrade To The Next OS Version")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "System Update")
+      update_system
+      ;;
+    "System Cleanup")
+      cleanup_system
+      ;;
+    "System Upgrade To The Next OS Version")
+      #      upgrade_system_to_next_release
+      ;;
+    *) echo "invalid option $REPLY" ;;
+    esac
+  done
+}
+
 update_system() {
   echo "Updating System"
 
@@ -93,7 +116,7 @@ update_system() {
     sudo apt upgrade
     return
   elif [ -x "$(command -v dnf)" ]; then
-    sudo dnf update
+    sudo dnf update --refresh
     return
   elif [ -x "$(command -v pacman)" ]; then
     sudo pacman -Syyu
@@ -121,23 +144,20 @@ cleanup_system() {
   fi
 }
 
-system_management() {
+package_querying() {
   local PS3='Please enter your choice: '
-  local options=("Back" "System Update" "System Cleanup" "System Upgrade To The Next OS Version")
+  local options=("Back" "System Package Querying" "Flatpak Package Querying")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
     "Back")
       return
       ;;
-    "System Update")
-      update_system
+    "System Package Querying")
+      system_package_querying
       ;;
-    "System Cleanup")
-      cleanup_system
-      ;;
-    "System Upgrade To The Next OS Version")
-      #        upgrade_system_to_next_release
+    "Flatpak Package Querying")
+      flatpak_querying
       ;;
     *) echo "invalid option $REPLY" ;;
     esac
@@ -157,8 +177,8 @@ main() {
     "OS Management")
       system_management
       ;;
-    "OS Package Query")
-      #        package_query
+    "OS Package Querying")
+      package_querying
       ;;
     "OS Recovery")
       #        system_recovery
