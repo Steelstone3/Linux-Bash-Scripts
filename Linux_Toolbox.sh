@@ -1,3 +1,5 @@
+#!/bin/bash
+
 OPTIONS_MESSAGE='Please enter your choice: '
 INVALID_OPTION='Invalid option'
 
@@ -232,32 +234,79 @@ remove_system_package() {
   echo "Remove a system package"
   read -p "Enter package name to remove: " package
 
-   if has_apt; then
-      sudo apt remove ${package}
-      return
-    elif has_dnf; then
-      sudo dnf remove ${package}
-      return
-    elif has_pacman; then
-      sudo pacman -Rs ${package}
-      return
-    fi
+  if has_apt; then
+    sudo apt remove ${package}
+    return
+  elif has_dnf; then
+    sudo dnf remove ${package}
+    return
+  elif has_pacman; then
+    sudo pacman -Rs ${package}
+    return
+  fi
 }
 
 find_installed_system_package() {
-  echo "Function needs implementing"
+  echo "Find an installed system package"
+  read -p "Enter search query: " searchQuery
+
+  if has_apt; then
+    apt list --installed | grep ${searchQuery} --ignore-case --color=auto
+    return
+  elif has_dnf; then
+    rpm -q ${searchQuery}
+    return
+  elif has_pacman; then
+    pacman -Qs ${searchQuery}
+    return
+  fi
 }
 
 find_remote_system_package() {
-  echo "Function needs implementing"
+  echo "Find a remote system package"
+  read -p "Enter search query: " searchQuery
+
+  if has_apt; then
+    apt list | grep ${searchQuery} --ignore-case --color=auto
+    return
+  elif has_dnf; then
+    dnf search all ${searchQuery}
+    return
+  elif has_pacman; then
+    pacman -Ss ${searchQuery}
+    return
+  fi
 }
 
 list_all_installed_system_packages() {
-  echo "Function needs implementing"
+  echo "Listing all installed system packages"
+
+  if has_apt; then
+    apt list --installed
+    return
+  elif has_dnf; then
+    rpm -qa | sort -V
+    return
+  elif has_pacman; then
+    pacman -Q
+    return
+  fi
 }
 
 list_all_remote_system_packages() {
-  echo "Function needs implementing"
+  echo "Listing all remote system packages"
+
+  if has_apt; then
+      apt list | more
+      return
+    elif has_dnf; then
+      dnf search all * | sort -V | more
+      return
+    elif has_pacman; then
+      echo "MAY NOT WORK REQUIRES TESTING"
+      pacman -S
+      return
+    fi
 }
 
 flatpak_querying() {
