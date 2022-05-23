@@ -2,6 +2,7 @@
 
 OPTIONS_MESSAGE='Please enter your choice: '
 INVALID_OPTION='Invalid option'
+UNSUPPORT_MESSAGE='Unsupported on your current operating system'
 
 DEBAIN='Debain'
 UBUNTU='Ubuntu'
@@ -34,11 +35,11 @@ has_systemd() {
 }
 
 has_open_rc() {
-  echo "OpenRC currently not supported"
+  echo "OpenRC is $UNSUPPORT_MESSAGE"
 }
 
 has_r_unit() {
-  echo "Runit currently not supported"
+  echo "Runit is $UNSUPPORT_MESSAGE"
 }
 
 display_pop_welcome_message() {
@@ -117,7 +118,7 @@ display_os_welcome_message() {
     display_fedora_welcome_message
     return
     ;;
-  *) echo "Unsupported OS" ;;
+  *) echo "$UNSUPPORT_MESSAGE" ;;
   esac
 }
 
@@ -138,7 +139,6 @@ system_management() {
       ;;
     "System Upgrade To The Next OS Version")
       upgrade_system_to_next_release
-      echo "Currently not supported"
       ;;
     *) echo "$INVALID_OPTION $REPLY" ;;
     esac
@@ -203,7 +203,7 @@ check_upgrade_to_next_release() {
     run_fedora_upgrade
     return
     ;;
-  *) echo "Unsupported OS" ;;
+  *) echo "$UNSUPPORT_MESSAGE" ;;
   esac
 }
 
@@ -238,7 +238,7 @@ case $OPERATING_SYSTEM in
     sudo dnf system-upgrade reboot
     return
     ;;
-  *) echo "Unsupported OS" ;;
+  *) echo "$UNSUPPORT_MESSAGE" ;;
   esac
 }
 
@@ -386,7 +386,6 @@ list_all_remote_system_packages() {
     dnf search all * | sort -V | more
     return
   elif has_pacman; then
-    echo "MAY NOT WORK REQUIRES TESTING"
     pacman -S
     return
   fi
@@ -465,7 +464,7 @@ list_all_remote_flatpak_packages() {
 }
 
 snap_querying() {
-  echo "Not currently implemented"
+  echo "Snap is $UNSUPPORT_MESSAGE"
 }
 
 system_recovery() {
@@ -527,7 +526,7 @@ recover_flatpak() {
     elif has_dnf; then
       sudo dnf install flatpak
     elif has_pacman; then
-      echo "pacman flatpak recovery is currently not supported"
+      echo "pacman flatpak recovery is $UNSUPPORT_MESSAGE"
     fi
 
     echo "Adding Repositories"
@@ -537,7 +536,7 @@ recover_flatpak() {
 
 recover_snap() {
   if has_snap; then
-    echo "Snap recovery currently not supported"
+    echo "Snap recovery currently is $UNSUPPORT_MESSAGE"
   fi
 }
 
@@ -554,7 +553,7 @@ recover_system_package_manager() {
     sudo rpm -Va
     return
   elif has_pacman; then
-    echo "Pacman recovery is currently not supported"
+    echo "Pacman recovery is currently is $UNSUPPORT_MESSAGE"
     return
   fi
 }
