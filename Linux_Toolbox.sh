@@ -5,7 +5,7 @@ INVALID_OPTION='Invalid option'
 
 DEBAIN='Debain'
 UBUNTU='Ubuntu'
-POP_OS='Pop_OS'
+POP_OS='Pop!_OS'
 FEDORA='Fedora'
 MANJARO='Manjaro'
 
@@ -504,6 +504,7 @@ recover_system_package_manager() {
 }
 
 main() {
+  determine_os
   display_os_welcome_message
 
   PS3=$OPTIONS_MESSAGE
