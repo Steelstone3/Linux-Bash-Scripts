@@ -297,16 +297,16 @@ list_all_remote_system_packages() {
   echo "Listing all remote system packages"
 
   if has_apt; then
-      apt list | more
-      return
-    elif has_dnf; then
-      dnf search all * | sort -V | more
-      return
-    elif has_pacman; then
-      echo "MAY NOT WORK REQUIRES TESTING"
-      pacman -S
-      return
-    fi
+    apt list | more
+    return
+  elif has_dnf; then
+    dnf search all * | sort -V | more
+    return
+  elif has_pacman; then
+    echo "MAY NOT WORK REQUIRES TESTING"
+    pacman -S
+    return
+  fi
 }
 
 flatpak_querying() {
@@ -342,27 +342,43 @@ flatpak_querying() {
 }
 
 install_flatpak_package() {
-  echo "Function needs implementing"
+  echo "Install a flatpak package"
+  read -p "Enter package name to install: " package
+
+  flatpak install ${package}
 }
 
 uninstall_flatpak_package() {
-  echo "Function needs implementing"
+  echo "Uninstall a flatpak package"
+  read -p "Enter package name to install: " package
+
+  flatpak uninstall ${package}
 }
 
 find_installed_flatpak_package() {
-  echo "Function needs implementing"
+  echo "Find an installed flatpak package"
+  read -p "Enter search query: " searchQuery
+
+  flatpak list | grep ${searchQuery} --ignore-case --color=auto
 }
 
 find_remote_flatpak_package() {
-  echo "Function needs implementing"
+  echo "Find an installed flatpak package"
+  read -p "Enter search query: " searchQuery
+
+  flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto
 }
 
 list_all_installed_flatpak_packages() {
-  echo "Function needs implementing"
+  echo "Listing installed flatpak packages"
+
+  flatpak list
 }
 
 list_all_remote_flatpak_packages() {
-  echo "Function needs implementing"
+  echo "Listing all remote flatpak packages"
+
+  flatpak remote-ls | more
 }
 
 system_recovery() {
