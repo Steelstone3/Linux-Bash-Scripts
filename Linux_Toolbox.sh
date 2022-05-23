@@ -450,7 +450,11 @@ reset_graphics_environment() {
 }
 
 reset_networking() {
-  echo "Not currently implemented"
+  echo "Restarting the networking service"
+
+  if has_systemd; then
+    sudo systemctl restart NetworkManager.service
+  fi
 }
 
 recover_package_managers() {
