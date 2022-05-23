@@ -229,7 +229,19 @@ install_system_package() {
 }
 
 remove_system_package() {
-  echo "Function needs implementing"
+  echo "Remove a system package"
+  read -p "Enter package name to remove: " package
+
+   if has_apt; then
+      sudo apt remove ${package}
+      return
+    elif has_dnf; then
+      sudo dnf remove ${package}
+      return
+    elif has_pacman; then
+      sudo pacman -Rs ${package}
+      return
+    fi
 }
 
 find_installed_system_package() {
