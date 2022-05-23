@@ -9,6 +9,14 @@ POP_OS='Pop_OS'
 FEDORA='Fedora'
 MANJARO='Manjaro'
 
+has_flatpak() {
+  [ -x "$(command -v flatpak)" ]
+}
+
+has_snap() {
+  [ -x "$(command -v snap)" ]
+}
+
 has_apt() {
   [ -x "$(command -v apt)" ]
 }
@@ -19,6 +27,22 @@ has_dnf() {
 
 has_pacman() {
   [ -x "$(command -v pacman)" ]
+}
+
+has_systemd() {
+  [ -x "$(command -v systemctl)" ]
+}
+
+has_systemd() {
+  [ -x "$(command -v systemctl)" ]
+}
+
+has_open_rc() {
+  echo "OpenRC currently not supported"
+}
+
+has_r_unit() {
+  echo "Runit currently not supported"
 }
 
 display_pop_welcome_message() {
@@ -126,7 +150,7 @@ system_management() {
 update_system() {
   echo "Updating System"
 
-  if [ -x "$(command -v flatpak)" ]; then
+  if has_flatpak; then
     sudo flatpak update
   fi
   if has_apt; then
@@ -145,7 +169,7 @@ update_system() {
 cleanup_system() {
   echo "Cleaning System"
 
-  if [ -x "$(command -v flatpak)" ]; then
+  if has_flatpak; then
     sudo flatpak uninstall --unused --delete-data
   fi
   if has_apt; then
@@ -164,7 +188,7 @@ cleanup_system() {
 
 package_querying() {
   local PS3=$OPTIONS_MESSAGE
-  local options=("Back" "System Package Querying" "Flatpak Package Querying")
+  local options=("Back" "System Package Querying" "Flatpak Package Querying" "Snap Package Querying")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
@@ -176,6 +200,9 @@ package_querying() {
       ;;
     "Flatpak Package Querying")
       flatpak_querying
+      ;;
+    "Snap Package Querying")
+      snap_querying
       ;;
     *) echo "$INVALID_OPTION $REPLY" ;;
     esac
@@ -381,8 +408,95 @@ list_all_remote_flatpak_packages() {
   flatpak remote-ls | more
 }
 
+snap_querying() {
+  echo "Not currently implemented"
+}
+
 system_recovery() {
-  echo "Function needs implementing"
+  local PS3=$OPTIONS_MESSAGE
+  local options=("Back" "Reset Graphics Environment" "Reset Networking" "Recover Package Managers")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "Reset Graphics Environment")
+      reset_graphics_environment
+      ;;
+    "Reset Networking")
+      reset_networking
+      ;;
+    "Recover Package Managers")
+      recover_package_managers
+      ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
+    esac
+  done
+}
+
+reset_graphics_environment() {
+  echo "Restarting the Display Manager"
+
+  if has_systemd; then
+    if [ -x "$(command -v gdm)" ]; then
+      sudo systemctl restart gdm
+    elif [ -x "$(command -v sddm)" ]; then
+      sudo systemctl restart sddm
+    elif [ -x "$(command -v lightdm)" ]; then
+      sudo systemctl restart lightdm
+    fi
+  fi
+}
+
+reset_networking() {
+  echo "Not currently implemented"
+}
+
+recover_package_managers() {
+  recover_flatpak
+  recover_snap
+  recover_system_package_manager
+}
+
+recover_flatpak() {
+  if has_flatpak; then
+    echo "Installing flatpak"
+    if has_apt; then
+      sudo apt install flatpak
+    elif has_dnf; then
+      sudo dnf install flatpak
+    elif has_pacman; then
+      echo "pacman flatpak recovery is currently not supported"
+    fi
+
+    echo "Adding Repositories"
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  fi
+}
+
+recover_snap() {
+  if has_snap; then
+    echo "Snap recovery currently not supported"
+  fi
+}
+
+recover_system_package_manager() {
+  if has_apt; then
+    echo "Attempting to recover apt..."
+    sudo dpkg --configure -a
+    sudo apt update
+    sudo apt install --fix-broken --fix-missing
+    return
+  elif has_dnf; then
+    echo "Attempting to recover rpm..."
+    sudo rpm --rebuilddb
+    sudo rpm -Va
+    return
+  elif has_pacman; then
+    echo "Pacman recovery is currently not supported"
+    return
+  fi
 }
 
 main() {
