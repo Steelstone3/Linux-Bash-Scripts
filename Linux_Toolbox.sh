@@ -33,10 +33,6 @@ has_systemd() {
   [ -x "$(command -v systemctl)" ]
 }
 
-has_systemd() {
-  [ -x "$(command -v systemctl)" ]
-}
-
 has_open_rc() {
   echo "OpenRC currently not supported"
 }
