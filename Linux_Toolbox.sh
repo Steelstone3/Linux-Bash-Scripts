@@ -2,7 +2,7 @@
 
 OPTIONS_MESSAGE='Please enter your choice: '
 INVALID_OPTION='Invalid option'
-UNSUPPORT_MESSAGE='Unsupported on your current operating system'
+UNSUPPORTED_MESSAGE='Unsupported on your current operating system'
 
 DEBAIN='Debain'
 UBUNTU='Ubuntu'
@@ -35,11 +35,11 @@ has_systemd() {
 }
 
 has_open_rc() {
-  echo "OpenRC is $UNSUPPORT_MESSAGE"
+  echo "OpenRC is $UNSUPPORTED_MESSAGE"
 }
 
 has_r_unit() {
-  echo "Runit is $UNSUPPORT_MESSAGE"
+  echo "Runit is $UNSUPPORTED_MESSAGE"
 }
 
 display_pop_welcome_message() {
@@ -118,7 +118,7 @@ display_os_welcome_message() {
     display_fedora_welcome_message
     return
     ;;
-  *) echo "$UNSUPPORT_MESSAGE" ;;
+  *) echo "$UNSUPPORTED_MESSAGE" ;;
   esac
 }
 
@@ -203,7 +203,7 @@ check_upgrade_to_next_release() {
     run_fedora_upgrade
     return
     ;;
-  *) echo "$UNSUPPORT_MESSAGE" ;;
+  *) echo "$UNSUPPORTED_MESSAGE" ;;
   esac
 }
 
@@ -238,7 +238,7 @@ case $OPERATING_SYSTEM in
     sudo dnf system-upgrade reboot
     return
     ;;
-  *) echo "$UNSUPPORT_MESSAGE" ;;
+  *) echo "$UNSUPPORTED_MESSAGE" ;;
   esac
 }
 
@@ -464,20 +464,26 @@ list_all_remote_flatpak_packages() {
 }
 
 snap_querying() {
-  echo "Snap is $UNSUPPORT_MESSAGE"
+  echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
 system_recovery() {
   local PS3=$OPTIONS_MESSAGE
-  local options=("Back" "Reset Graphics Environment" "Reset Networking" "Recover Package Managers")
+  local options=("Back" "Replace Desktop Environment" "Hard Reset Desktop Environment" "Reset Display Manager" "Reset Networking" "Recover Package Managers")
   local opt
   select opt in "${options[@]}"; do
     case $opt in
     "Back")
       return
       ;;
-    "Reset Graphics Environment")
-      reset_graphics_environment
+    "Replace Desktop Environment")
+      replace_desktop_environment
+      ;;
+    "Hard Reset Desktop Environment")
+      hard_reset_desktop_environment
+      ;;
+    "Reset Display Manager")
+      reset_display_manager
       ;;
     "Reset Networking")
       reset_networking
@@ -490,7 +496,92 @@ system_recovery() {
   done
 }
 
-reset_graphics_environment() {
+replace_desktop_environment() {
+  replace_desktop_environment_message='Replacing desktop enviroment'
+  
+  if [ -x "$(command -v gnome-shell)" ]; then
+    echo $replace_desktop_environment_message
+    gnome-shell --replace & disown
+  fi
+  if [ -x "$(command -v plasma-shell)" ]; then
+    echo $replace_desktop_environment_message
+    kquitapp5 plasma-shell && kstart5 plasma-shell
+  fi
+  if [ -x "$(command -v cinnamon)" ]; then
+    echo $replace_desktop_environment_message
+
+    echo $UNSUPPORTED_MESSAGE
+  fi
+  if [ -x "$(command -v budgie-panel)" ]; then
+    echo $replace_desktop_environment_message
+
+    echo $UNSUPPORTED_MESSAGE
+  fi
+  if [ -x "$(command -v mate-panel)" ]; then
+    echo $replace_desktop_environment_message
+    mate-panel --replace
+  fi
+  if [ -x "$(command -v xfwm4)" ]; then
+    echo $replace_desktop_environment_message
+    xfce4-panel -r && xfwm4 --replace
+  fi
+  if [ -x "$(command -v lxqt-panel)" ]; then
+    echo $replace_desktop_environment_message
+
+    echo $UNSUPPORTED_MESSAGE
+  fi
+  if [ -x "$(command -v lxpanelctl)" ]; then
+    echo $replace_desktop_environment_message
+    lxpanelctl restart && openbox --restart
+  fi
+  if [ -x "$(command -v i3-msg)" ]; then
+    echo $replace_desktop_environment_message
+    i3-msg restart
+  fi
+}
+
+hard_reset_desktop_environment() {
+  kill_desktop_enviroment_message='Killing desktop enviroment'
+  
+  if [ -x "$(command -v gnome-shell)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 gnome-shell
+  fi
+  if [ -x "$(command -v plasma-shell)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 plasma-shell
+  fi
+  if [ -x "$(command -v plasma-desktop)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 plasma-desktop
+  fi
+  if [ -x "$(command -v cinnamon)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 cinnamon
+  fi
+  if [ -x "$(command -v budgie-panel)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 budgie-panel
+  fi
+  if [ -x "$(command -v mate-panel)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 mate-panel
+  fi
+  if [ -x "$(command -v xfwm4)" ]; then
+    echo $kill_desktop_enviroment_message
+    killall -3 xfwm4
+  fi
+  if [ -x "$(command -v lxqt-panel)" ]; then
+    echo $replace_desktop_environment_message
+    killall -3 lxqt-panel
+  fi
+  if [ -x "$(command -v lxpanelctl)" ]; then
+    echo $replace_desktop_environment_message
+    killall -3 lxpanelctl
+  fi
+}
+
+reset_display_manager() {
   echo "Restarting the Display Manager"
 
   if has_systemd; then
@@ -526,7 +617,7 @@ recover_flatpak() {
     elif has_dnf; then
       sudo dnf install flatpak
     elif has_pacman; then
-      echo "pacman flatpak recovery is $UNSUPPORT_MESSAGE"
+      echo "pacman flatpak recovery is $UNSUPPORTED_MESSAGE"
     fi
 
     echo "Adding Repositories"
@@ -536,7 +627,7 @@ recover_flatpak() {
 
 recover_snap() {
   if has_snap; then
-    echo "Snap recovery currently is $UNSUPPORT_MESSAGE"
+    echo "Snap recovery currently is $UNSUPPORTED_MESSAGE"
   fi
 }
 
@@ -553,7 +644,7 @@ recover_system_package_manager() {
     sudo rpm -Va
     return
   elif has_pacman; then
-    echo "Pacman recovery is currently is $UNSUPPORT_MESSAGE"
+    echo "Pacman recovery is currently is $UNSUPPORTED_MESSAGE"
     return
   fi
 }
