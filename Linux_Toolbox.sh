@@ -106,6 +106,8 @@ determine_os() {
 }
 
 display_os_welcome_message() {
+  determine_os
+
   case $OPERATING_SYSTEM in
   *"$POP_OS"*)
     display_pop_welcome_message
@@ -500,7 +502,6 @@ recover_system_package_manager() {
 }
 
 main() {
-  determine_os
   display_os_welcome_message
 
   PS3=$OPTIONS_MESSAGE
