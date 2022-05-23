@@ -137,7 +137,7 @@ system_management() {
       cleanup_system
       ;;
     "System Upgrade To The Next OS Version")
-      #      upgrade_system_to_next_release
+      upgrade_system_to_next_release
       echo "Currently not supported"
       ;;
     *) echo "$INVALID_OPTION $REPLY" ;;
@@ -153,7 +153,7 @@ update_system() {
   fi
   if has_apt; then
     sudo apt update
-    sudo apt upgrade
+    sudo apt full-upgrade
     return
   elif has_dnf; then
     sudo dnf update --refresh
@@ -182,6 +182,64 @@ cleanup_system() {
     sudo pacman -Rs
     return
   fi
+}
+
+upgrade_system_to_next_release() {
+  determine_os
+  check_upgrade_to_next_release
+  check_reboot_and_upgrade
+}
+
+check_upgrade_to_next_release() {
+  echo "Upgrading Operating System"
+  read -p "Are you sure? Type - I am sure: " confirm && [[ $confirm == [iI][" "][aA][mM][" "][sS][uU][rR][eE] ]] || return
+  
+  case $OPERATING_SYSTEM in
+  *"$POP_OS"*)
+    run_pop_upgrade
+    return
+    ;;
+  *"$FEDORA"*)
+    run_fedora_upgrade
+    return
+    ;;
+  *) echo "Unsupported OS" ;;
+  esac
+}
+
+run_pop_upgrade() {
+  update_system
+  pop-upgrade release upgrade
+}
+
+run_fedora_upgrade() {
+  update_system
+
+  if [ -x "$(command -v dnf-plugin-system-upgrade)" ]; then
+    sudo dnf install dnf-plugin-system-upgrade
+  fi
+
+  current_fedora_version=$(cat /etc/fedora-release | tr -dc '0-9')
+  next_fedora_version=$(current_fedora_version + 1)
+
+  echo "Next Fedora Version: $next_fedora_version"
+  sudo dnf system-upgrade download --releasever=$next_fedora_version
+}
+
+check_reboot_and_upgrade() {
+  read -p "Reboot and upgrade system? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || return
+
+case $OPERATING_SYSTEM in
+  *"$POP_OS"*)
+    sudo reboot
+    return
+    ;;
+  *"$FEDORA"*)
+    sudo dnf system-upgrade reboot
+    return
+    ;;
+  *) echo "Unsupported OS" ;;
+  esac
 }
 
 package_querying() {
