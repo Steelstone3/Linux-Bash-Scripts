@@ -432,7 +432,7 @@ install_flatpak_package() {
 
 uninstall_flatpak_package() {
   echo "Uninstall a flatpak package"
-  read -p "Enter package name to install: " package
+  read -p "Enter package name to remove: " package
 
   flatpak uninstall ${package}
 }
