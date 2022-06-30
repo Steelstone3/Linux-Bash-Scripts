@@ -207,7 +207,7 @@ cleanup_system() {
     sudo dnf clean all
     return
   elif has_pacman; then
-    sudo pacman -Rs
+    pacman -Qdtq | sudo pacman -Rs -
     return
   fi
 }
@@ -231,7 +231,14 @@ check_upgrade_to_next_release() {
     run_fedora_upgrade
     return
     ;;
-  *) echo "$UNSUPPORTED_MESSAGE" ;;
+  *"$MANJARO"*)
+    echo "Manjaro is a rolling release distribution. Please run a normal system update."
+    return
+    ;;
+  *) 
+  	echo "$UNSUPPORTED_MESSAGE" 
+  	return
+  	;;
   esac
 }
 
