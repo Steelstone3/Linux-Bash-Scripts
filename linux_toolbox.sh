@@ -102,6 +102,30 @@ cccccccc;${WHITE}.:odl:.${BLUE};cccccccccccccc:,.
   echo "Welcome to Fedora Toolbox please select an option"
 }
 
+display_manjaro_welcome_message() {
+  GREEN='\033[92m'
+  NC='\033[0m' # No Color
+
+  echo -e "
+${GREEN}██████████████████  ████████
+██████████████████  ████████
+██████████████████  ████████
+██████████████████  ████████
+████████            ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████
+████████  ████████  ████████${NC}
+"
+
+  echo "Welcome to Manjaro Toolbox please select an option"
+}
+
 determine_os() {
   OPERATING_SYSTEM=$(cat /etc/*-release | grep "pretty_name" --ignore-case)
 }
@@ -116,6 +140,10 @@ display_os_welcome_message() {
     ;;
   *"$FEDORA"*)
     display_fedora_welcome_message
+    return
+    ;;
+  *"$MANJARO"*)
+    display_manjaro_welcome_message
     return
     ;;
   *) echo "$UNSUPPORTED_MESSAGE" ;;
