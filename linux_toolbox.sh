@@ -459,43 +459,72 @@ flatpak_querying() {
 }
 
 install_flatpak_package() {
-  echo "Install a flatpak package"
-  read -p "Enter package name to install: " package
+  if has_flatpak; then
+    echo "Install a flatpak package"
+    read -p "Enter package name to install: " package
 
-  flatpak install ${package}
+    flatpak install ${package}
+    return
+  fi
+  
+  echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 uninstall_flatpak_package() {
-  echo "Uninstall a flatpak package"
-  read -p "Enter package name to remove: " package
+  if has_flatpak; then
+    echo "Uninstall a flatpak package"
+    read -p "Enter package name to remove: " package
 
-  flatpak uninstall ${package}
+    flatpak uninstall ${package}
+    return
+  fi
+  
+  echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 find_installed_flatpak_package() {
-  echo "Find an installed flatpak package"
-  read -p "Enter search query: " searchQuery
+  if has_flatpak; then
+    echo "Find an installed flatpak package"
+    read -p "Enter search query: " searchQuery
 
-  flatpak list | grep ${searchQuery} --ignore-case --color=auto
+    flatpak list | grep ${searchQuery} --ignore-case --color=auto
+    return
+  fi
+  
+  echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 find_remote_flatpak_package() {
-  echo "Find an installed flatpak package"
-  read -p "Enter search query: " searchQuery
+  if has_flatpak; then 
+    echo "Find an installed flatpak package"
+    read -p "Enter search query: " searchQuery
 
-  flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto
+    flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto
+    return
+  fi
+  
+  echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 list_all_installed_flatpak_packages() {
-  echo "Listing installed flatpak packages"
+  if has_flatpak; then
+    echo "Listing installed flatpak packages"
 
-  flatpak list
+    flatpak list
+    return
+  fi
+  
+  echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 list_all_remote_flatpak_packages() {
-  echo "Listing all remote flatpak packages"
+  if has_flatpak; then
+    echo "Listing all remote flatpak packages"
 
-  flatpak remote-ls | more
+    flatpak remote-ls | more
+  fi
+  
+  echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 snap_querying() {
@@ -652,7 +681,7 @@ recover_flatpak() {
     elif has_dnf; then
       sudo dnf install flatpak
     elif has_pacman; then
-      echo "pacman flatpak recovery is $UNSUPPORTED_MESSAGE"
+      sudo pacman -S flatpak
     fi
 
     echo "Adding Repositories"
