@@ -708,7 +708,7 @@ recover_system_package_manager() {
     sudo rpm -Va
     return
   elif has_pacman; then
-    echo "Pacman recovery is currently is $UNSUPPORTED_MESSAGE"
+    echo "Pacman recovery is $UNSUPPORTED_MESSAGE"
     return
   fi
 }
