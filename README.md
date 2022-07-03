@@ -11,7 +11,7 @@ Linux Toolbox as an application presents a menu . Each "Toolbox" contains a bag 
 - Debain (Soon)
 - Pop_OS!
 - Fedora
-- Manjaro (Soon)
+- Manjaro
 
 ### Usage
 
