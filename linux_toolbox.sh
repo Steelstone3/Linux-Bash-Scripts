@@ -42,6 +42,35 @@ has_r_unit() {
   echo "Runit is $UNSUPPORTED_MESSAGE"
 }
 
+display_ubuntu_welcome_message() {
+   RED='\033[0;33m'
+   WHITE='\033[1;37m'
+   NC='\033[0m' # No Color
+   
+   echo -e "	    ${RED}.-/+oossssoo+/-.
+        -:+ssssssssssssssssss+:-
+      -+ssssssssssssssssss${WHITE}yy${RED}ssss+-
+    .ossssssssssssssssss${WHITE}dMMMNy${RED}sssso.
+   /sssssssssss${WHITE}hdmmNNmmyNMMMMh${RED}ssssss/
+  +sssssssss${WHITE}hmydMMMMMMMNddddy${RED}ssssssss+
+ /ssssssss${WHITE}hNMMMyhhyyyyhmNMMMNh${RED}ssssssss/
+.ssssssss${WHITE}dMMMNh${RED}ssssssssss${WHITE}hNMMMd${RED}ssssssss.
++ssss${WHITE}hhhyNMMNy${RED}ssssssssssss${WHITE}yNMMMy${RED}sssssss+
+oss${WHITE}yNMMMNyMMh${RED}ssssssssssssss${WHITE}hmmmh${RED}ssssssso
+oss${WHITE}yNMMMNyMMh${RED}ssssssssssssss${WHITE}hmmmh${RED}ssssssso
++ssss${WHITE}hhhyNMMNy${RED}ssssssssssss${WHITE}yNMMMy${RED}sssssss+
+.ssssssss${WHITE}dMMMNh${RED}ssssssssss${WHITE}hNMMMd${RED}ssssssss.
+ /ssssssss${WHITE}hNMMMyhhyyyyhdNMMMNh${RED}ssssssss/
+  +sssssssss${WHITE}dmydMMMMMMMMddddy${RED}ssssssss+
+   /sssssssssss${WHITE}hdmNNNNmyNMMMMh${RED}ssssss/
+    .ossssssssssssssssss${WHITE}dMMMNy${RED}sssso.
+      -+sssssssssssssssss${WHITE}yyy${RED}ssss+-
+        -:+ssssssssssssssssss+:-
+            .-/+oossssoo+/-."${NC}
+
+  echo "Welcome to Ubuntu Toolbox please select an option"
+}
+
 display_pop_welcome_message() {
   CYAN='\033[0;36m'
   WHITE='\033[1;37m'
@@ -134,6 +163,10 @@ display_os_welcome_message() {
   determine_os
 
   case $OPERATING_SYSTEM in
+  *"$UBUNTU"*)
+    display_ubuntu_welcome_message
+    return
+    ;;
   *"$POP_OS"*)
     display_pop_welcome_message
     return
@@ -496,7 +529,7 @@ find_installed_flatpak_package() {
 
 find_remote_flatpak_package() {
   if has_flatpak; then 
-    echo "Find an installed flatpak package"
+    echo "Find a remote flatpak package"
     read -p "Enter search query: " searchQuery
 
     flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto
@@ -508,7 +541,7 @@ find_remote_flatpak_package() {
 
 list_all_installed_flatpak_packages() {
   if has_flatpak; then
-    echo "Listing installed flatpak packages"
+    echo "Listing all installed flatpak packages"
 
     flatpak list
     return
@@ -528,6 +561,89 @@ list_all_remote_flatpak_packages() {
 }
 
 snap_querying() {
+  local PS3=$OPTIONS_MESSAGE
+  local options=("Back" "Install A Snap Package" "Uninstall A Snap Package" "Search For Remote Snap Package" "List All Installed Snap Packages" "List All Remote Snap Packages")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "Install A Snap Package")
+      install_snap_package
+      ;;
+    "Uninstall A Snap Package")
+      uninstall_snap_package
+      ;;
+    "Search For Remote Snap Package")
+      find_remote_snap_package
+      ;;
+    "List All Installed Snap Packages")
+      list_all_installed_snap_packages
+      ;;
+    "List All Remote Snap Packages")
+      list_all_remote_snap_packages
+      ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
+    esac
+  done
+}
+
+install_snap_package() {
+  if has_snap; then
+    echo "Install a snap package"
+    read -p "Enter package name to install: " package
+
+    sudo snap install ${package}
+    return
+  fi
+  
+  echo "Snap is $UNSUPPORTED_MESSAGE"
+}
+
+uninstall_snap_package() {
+  if has_snap; then
+    echo "Remove a snap package"
+    read -p "Enter package name to remove: " package
+
+    sudo snap remove ${package}
+    return
+  fi
+  
+  echo "Snap is $UNSUPPORTED_MESSAGE"
+}
+
+find_remote_snap_package() {
+  if has_snap; then
+    echo "Find a remote snap package"
+    read -p "Enter search query: " package
+
+    snap info ${package}
+    return
+  fi
+  
+  echo "Snap is $UNSUPPORTED_MESSAGE"
+}
+
+list_all_installed_snap_packages() {
+  if has_snap; then
+    echo "Listing all installed snap packages"
+  
+    snap list
+    return
+  fi
+  
+  echo "Snap is $UNSUPPORTED_MESSAGE"
+}
+
+list_all_remote_snap_packages() {
+  if has_snap; then
+    echo "Listing all remote snap packages"
+  
+    snap find % | more
+    return
+  fi
+  
   echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
@@ -668,9 +784,9 @@ reset_networking() {
 }
 
 recover_package_managers() {
+  recover_system_package_manager
   recover_flatpak
   recover_snap
-  recover_system_package_manager
 }
 
 recover_flatpak() {
@@ -690,9 +806,15 @@ recover_flatpak() {
 }
 
 recover_snap() {
-  if has_snap; then
-    echo "Snap recovery currently is $UNSUPPORTED_MESSAGE"
+  if has_systemd; then
+    if has_snap; then
+      sudo systemctl restart snapd.service
+      #sudo snap list | grep -v Publisher | awk '{print $1}' | tr '\n' '\n' | snap restart --reload
+      return
+    fi
   fi
+  
+  echo "Snap recovery currently is $UNSUPPORTED_MESSAGE"
 }
 
 recover_system_package_manager() {
