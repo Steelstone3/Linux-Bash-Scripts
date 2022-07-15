@@ -43,7 +43,7 @@ has_r_unit() {
 }
 
 display_debian_welcome_message() {
-  RED='\033[0;33m'
+  RED='\033[0;31m'
   NC='\033[0m' # No Color
   echo -e "                            ${RED},
           ,,,,,,,,,,,,,,,,,
