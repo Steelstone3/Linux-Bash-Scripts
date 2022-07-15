@@ -4,7 +4,7 @@ OPTIONS_MESSAGE='Please enter your choice: '
 INVALID_OPTION='Invalid option'
 UNSUPPORTED_MESSAGE='Unsupported on your current operating system'
 
-DEBAIN='Debain'
+DEBIAN='Debian'
 UBUNTU='Ubuntu'
 POP_OS='Pop!_OS'
 FEDORA='Fedora'
@@ -40,6 +40,15 @@ has_open_rc() {
 
 has_r_unit() {
   echo "Runit is $UNSUPPORTED_MESSAGE"
+}
+
+display_debian_welcome_message() {
+  RED='\033[0;33m'
+  WHITE='\033[1;37m'
+  NC='\033[0m' # No Color
+  echo -e "   "
+
+  echo "Welcome to Debian Toolbox please select an option"
 }
 
 display_ubuntu_welcome_message() {
@@ -163,6 +172,10 @@ display_os_welcome_message() {
   determine_os
 
   case $OPERATING_SYSTEM in
+  *"$DEBIAN"*)
+    display_debian_welcome_message
+    return
+    ;;
   *"$UBUNTU"*)
     display_ubuntu_welcome_message
     return
