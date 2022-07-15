@@ -1,9 +1,20 @@
 #!/bin/bash
 
+#MESSAGES
 OPTIONS_MESSAGE='Please enter your choice: '
 INVALID_OPTION='Invalid option'
 UNSUPPORTED_MESSAGE='Unsupported on your current operating system'
 
+#COLOURS
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+GREEN='\033[92m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+
+#SUPPORTED DISTROS
 DEBIAN='Debian'
 UBUNTU='Ubuntu'
 POP_OS='Pop!_OS'
@@ -43,8 +54,6 @@ has_r_unit() {
 }
 
 display_debian_welcome_message() {
-  RED='\033[0;31m'
-  NC='\033[0m' # No Color
   echo -e "                   ${RED},
           ,,,,,,,,,,,,,,,,,
       ,,,,,,,,,        ,,,,,,,,
@@ -68,28 +77,24 @@ display_debian_welcome_message() {
 }
 
 display_ubuntu_welcome_message() {
-   RED='\033[0;33m'
-   WHITE='\033[1;37m'
-   NC='\033[0m' # No Color
-   
-   echo -e "	    ${RED}.-/+oossssoo+/-.
+   echo -e "	    ${ORANGE}.-/+oossssoo+/-.
         -:+ssssssssssssssssss+:-
-      -+ssssssssssssssssss${WHITE}yy${RED}ssss+-
-    .ossssssssssssssssss${WHITE}dMMMNy${RED}sssso.
-   /sssssssssss${WHITE}hdmmNNmmyNMMMMh${RED}ssssss/
-  +sssssssss${WHITE}hmydMMMMMMMNddddy${RED}ssssssss+
- /ssssssss${WHITE}hNMMMyhhyyyyhmNMMMNh${RED}ssssssss/
-.ssssssss${WHITE}dMMMNh${RED}ssssssssss${WHITE}hNMMMd${RED}ssssssss.
-+ssss${WHITE}hhhyNMMNy${RED}ssssssssssss${WHITE}yNMMMy${RED}sssssss+
-oss${WHITE}yNMMMNyMMh${RED}ssssssssssssss${WHITE}hmmmh${RED}ssssssso
-oss${WHITE}yNMMMNyMMh${RED}ssssssssssssss${WHITE}hmmmh${RED}ssssssso
-+ssss${WHITE}hhhyNMMNy${RED}ssssssssssss${WHITE}yNMMMy${RED}sssssss+
-.ssssssss${WHITE}dMMMNh${RED}ssssssssss${WHITE}hNMMMd${RED}ssssssss.
- /ssssssss${WHITE}hNMMMyhhyyyyhdNMMMNh${RED}ssssssss/
-  +sssssssss${WHITE}dmydMMMMMMMMddddy${RED}ssssssss+
-   /sssssssssss${WHITE}hdmNNNNmyNMMMMh${RED}ssssss/
-    .ossssssssssssssssss${WHITE}dMMMNy${RED}sssso.
-      -+sssssssssssssssss${WHITE}yyy${RED}ssss+-
+      -+ssssssssssssssssss${WHITE}yy${ORANGE}ssss+-
+    .ossssssssssssssssss${WHITE}dMMMNy${ORANGE}sssso.
+   /sssssssssss${WHITE}hdmmNNmmyNMMMMh${ORANGE}ssssss/
+  +sssssssss${WHITE}hmydMMMMMMMNddddy${ORANGE}ssssssss+
+ /ssssssss${WHITE}hNMMMyhhyyyyhmNMMMNh${ORANGE}ssssssss/
+.ssssssss${WHITE}dMMMNh${ORANGE}ssssssssss${WHITE}hNMMMd${ORANGE}ssssssss.
++ssss${WHITE}hhhyNMMNy${ORANGE}ssssssssssss${WHITE}yNMMMy${ORANGE}sssssss+
+oss${WHITE}yNMMMNyMMh${ORANGE}ssssssssssssss${WHITE}hmmmh${ORANGE}ssssssso
+oss${WHITE}yNMMMNyMMh${ORANGE}ssssssssssssss${WHITE}hmmmh${ORANGE}ssssssso
++ssss${WHITE}hhhyNMMNy${ORANGE}ssssssssssss${WHITE}yNMMMy${ORANGE}sssssss+
+.ssssssss${WHITE}dMMMNh${ORANGE}ssssssssss${WHITE}hNMMMd${ORANGE}ssssssss.
+ /ssssssss${WHITE}hNMMMyhhyyyyhdNMMMNh${ORANGE}ssssssss/
+  +sssssssss${WHITE}dmydMMMMMMMMddddy${ORANGE}ssssssss+
+   /sssssssssss${WHITE}hdmNNNNmyNMMMMh${ORANGE}ssssss/
+    .ossssssssssssssssss${WHITE}dMMMNy${ORANGE}sssso.
+      -+sssssssssssssssss${WHITE}yyy${ORANGE}ssss+-
         -:+ssssssssssssssssss+:-
             .-/+oossssoo+/-."${NC}
 
@@ -97,10 +102,6 @@ oss${WHITE}yNMMMNyMMh${RED}ssssssssssssss${WHITE}hmmmh${RED}ssssssso
 }
 
 display_pop_welcome_message() {
-  CYAN='\033[0;36m'
-  WHITE='\033[1;37m'
-  NC='\033[0m' # No Color
-
   echo -e "             ${CYAN}/////////////
            /////////////////////
         ///////${WHITE}*767${CYAN}////////////////
@@ -127,10 +128,6 @@ display_pop_welcome_message() {
 }
 
 display_fedora_welcome_message() {
-  BLUE='\033[0;34m'
-  WHITE='\033[1;37m'
-  NC='\033[0m' # No Color
-
   echo -e "
              ${BLUE}.',;::::;,'.
          .';:cccccccccccc:;,.
@@ -157,9 +154,6 @@ cccccccc;${WHITE}.:odl:.${BLUE};cccccccccccccc:,.
 }
 
 display_manjaro_welcome_message() {
-  GREEN='\033[92m'
-  NC='\033[0m' # No Color
-
   echo -e "
 ${GREEN}██████████████████  ████████
 ██████████████████  ████████
@@ -283,7 +277,7 @@ upgrade_system_to_next_release() {
 check_upgrade_to_next_release() {
   echo "Upgrading Operating System"
   read -p "Are you sure? Type - I am sure: " confirm && [[ $confirm == [iI][" "][aA][mM][" "][sS][uU][rR][eE] ]] || return
-  
+
   case $OPERATING_SYSTEM in
   *"$POP_OS"*)
     run_pop_upgrade
@@ -297,7 +291,7 @@ check_upgrade_to_next_release() {
     echo "Manjaro is a rolling release distribution. Please run a normal system update."
     return
     ;;
-  *) 
+  *)
   	echo "$UNSUPPORTED_MESSAGE" 
   	return
   	;;
@@ -528,7 +522,7 @@ install_flatpak_package() {
     flatpak install ${package}
     return
   fi
-  
+
   echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
@@ -540,7 +534,7 @@ uninstall_flatpak_package() {
     flatpak uninstall ${package}
     return
   fi
-  
+
   echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
@@ -552,19 +546,19 @@ find_installed_flatpak_package() {
     flatpak list | grep ${searchQuery} --ignore-case --color=auto
     return
   fi
-  
+
   echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
 find_remote_flatpak_package() {
-  if has_flatpak; then 
+  if has_flatpak; then
     echo "Find a remote flatpak package"
     read -p "Enter search query: " searchQuery
 
     flatpak remote-ls | grep ${searchQuery} --ignore-case --color=auto
     return
   fi
-  
+
   echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
@@ -575,7 +569,7 @@ list_all_installed_flatpak_packages() {
     flatpak list
     return
   fi
-  
+
   echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
@@ -585,7 +579,7 @@ list_all_remote_flatpak_packages() {
 
     flatpak remote-ls | more
   fi
-  
+
   echo "Flatpak is $UNSUPPORTED_MESSAGE"
 }
 
@@ -626,7 +620,7 @@ install_snap_package() {
     sudo snap install ${package}
     return
   fi
-  
+
   echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
@@ -638,7 +632,7 @@ uninstall_snap_package() {
     sudo snap remove ${package}
     return
   fi
-  
+
   echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
@@ -650,29 +644,29 @@ find_remote_snap_package() {
     snap info ${package}
     return
   fi
-  
+
   echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
 list_all_installed_snap_packages() {
   if has_snap; then
     echo "Listing all installed snap packages"
-  
+
     snap list
     return
   fi
-  
+
   echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
 list_all_remote_snap_packages() {
   if has_snap; then
     echo "Listing all remote snap packages"
-  
+
     snap find % | more
     return
   fi
-  
+
   echo "Snap is $UNSUPPORTED_MESSAGE"
 }
 
@@ -707,7 +701,7 @@ system_recovery() {
 
 replace_desktop_environment() {
   replace_desktop_environment_message='Replacing desktop enviroment'
-  
+
   if [ -x "$(command -v gnome-shell)" ]; then
     echo $replace_desktop_environment_message
     gnome-shell --replace & disown
@@ -751,7 +745,7 @@ replace_desktop_environment() {
 
 hard_reset_desktop_environment() {
   kill_desktop_enviroment_message='Killing desktop enviroment'
-  
+
   if [ -x "$(command -v gnome-shell)" ]; then
     echo $kill_desktop_enviroment_message
     killall -3 gnome-shell
@@ -842,7 +836,7 @@ recover_snap() {
       return
     fi
   fi
-  
+
   echo "Snap recovery currently is $UNSUPPORTED_MESSAGE"
 }
 
@@ -867,7 +861,6 @@ recover_system_package_manager() {
 administration() {
   local PS3=$OPTIONS_MESSAGE
   local options=("Back" "Add New User" "Remove User" "Add User To Sudoers" "Remove User From Sudoers")
-  local opt
   select opt in "${options[@]}"; do
     case $opt in
     "Back")
@@ -902,20 +895,22 @@ add_user_to_sudoers_group() {
   echo "Adding a user to the sudoers group"
   read -p "Enter username to add: " username
 
-  su
-  /usr/sbin/adduser ${username} sudo
-  exit
-  sudo -l
+  echo -e ""${ORANGE}"Run: whoami"${BLUE}" to discover current username "${ORANGE}"- optional step"${NC}""
+  echo -e ""${GREEN}"Run: su"${BLUE}" to switch to the root user"${NC}""
+  echo -e ""${BLUE}"Then run the following command ↓ to elevate user privileges"${NC}""
+  echo -e ""${GREEN}"/usr/sbin/adduser "${CYAN}""${username}""${GREEN}" sudo; "${ORANGE}"sudo -l"${NC}""
+  echo -e ""${ORANGE}"Run: exit"${BLUE}" to return to the previous user "${ORANGE}"- optional step"${NC}""
 }
 
 remove_user_from_sudoers_group() {
-  echo "Adding a user to the sudoers group"
+  echo -e "Adding a user to the sudoers group"
   read -p "Enter username to add: " username
 
-  su
-  /usr/sbin/deluser ${username} sudo
-  exit
-  sudo -l
+  echo -e ""${ORANGE}"Run: whoami"${BLUE}" to discover current username "${ORANGE}"- optional step"${NC}""
+  echo -e ""${GREEN}"Run: su"${BLUE}" to switch to the root user"${NC}""
+  echo -e ""${BLUE}"Then run the following command ↓ to elevate user privileges"${NC}""
+  echo -e ""${GREEN}"/usr/sbin/deluser "${CYAN}""${username}""${GREEN}" sudo; "${ORANGE}"sudo -l"${NC}""
+  echo -e ""${ORANGE}"Run: exit"${BLUE}" to return to the previous user "${ORANGE}"- optional step"${NC}""
 }
 
 main() {
