@@ -46,7 +46,24 @@ display_debian_welcome_message() {
   RED='\033[0;33m'
   WHITE='\033[1;37m'
   NC='\033[0m' # No Color
-  echo -e "   "
+  echo -e "                                        ,                                     
+                                 ,,,,,,,,,,,,,,,,,                              
+                             ,,,,,,,,,        ,,,,,,,,                          
+                           ,,,,,,                 ,,,,,,                        
+                          ,,,,                      ,,,,,,                      
+                        ,,,               ,,,         ,,,                       
+                       ,,,            ,               ,,, .                     
+                       ,,            ,                ,,,.                      
+                       ,,           ,                 ,,                        
+                       ,,           ,,               ,,,                        
+                       ,,            .,            .,,                          
+                       ,,,            , ,,,    ,,,,                             
+                        ,,,,               ,,,                                  
+                         ,,,                                                    
+                          ,,,                                                   
+                            ,,,                                                 
+                              .,,,                                              
+                                  ,,,              "
 
   echo "Welcome to Debian Toolbox please select an option"
 }
