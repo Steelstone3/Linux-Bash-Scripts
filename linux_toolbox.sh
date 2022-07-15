@@ -62,7 +62,7 @@ display_debian_welcome_message() {
   ,,,
     ,,,
       .,,,
-          ,,,{NC}"
+          ,,,${NC}"
 
   echo "Welcome to Debian Toolbox please select an option"
 }
