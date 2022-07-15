@@ -835,11 +835,65 @@ recover_system_package_manager() {
   fi
 }
 
+administration() {
+  local PS3=$OPTIONS_MESSAGE
+  local options=("Back" "Add New User" "Remove User" "Add User To Sudoers" "Remove User From Sudoers")
+  local opt
+  select opt in "${options[@]}"; do
+    case $opt in
+    "Back")
+      return
+      ;;
+    "Add New User")
+      add_new_user
+      ;;
+    "Remove User")
+      remove_user
+      ;;
+    "Add User To Sudoers")
+      add_user_to_sudoers_group
+      ;;
+    "Remove User From Sudoers")
+      remove_user_from_sudoers_group
+      ;;
+    *) echo "$INVALID_OPTION $REPLY" ;;
+    esac
+  done
+}
+
+add_new_user() {
+  echo "$UNSUPPORTED_MESSAGE"
+}
+
+remove_user() {
+  echo "$UNSUPPORTED_MESSAGE"
+}
+
+add_user_to_sudoers_group() {
+  echo "Adding a user to the sudoers group"
+  read -p "Enter username to add: " username
+
+  su
+  /usr/sbin/adduser ${username} sudo
+  exit
+  sudo -l
+}
+
+remove_user_from_sudoers_group() {
+  echo "Adding a user to the sudoers group"
+  read -p "Enter username to add: " username
+
+  su
+  /usr/sbin/deluser ${username} sudo
+  exit
+  sudo -l
+}
+
 main() {
   display_os_welcome_message
 
   PS3=$OPTIONS_MESSAGE
-  options=("Quit" "OS Management" "OS Package Querying" "OS Recovery")
+  options=("Quit" "OS Management" "OS Package Querying" "OS Administration" "OS Recovery")
   select opt in "${options[@]}"; do
     case $opt in
     "Quit")
@@ -850,6 +904,9 @@ main() {
       ;;
     "OS Package Querying")
       package_querying
+      ;;
+    "OS Administration")
+      administration
       ;;
     "OS Recovery")
       system_recovery
