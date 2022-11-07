@@ -53,6 +53,42 @@ has_r_unit() {
   echo "Runit is $UNSUPPORTED_MESSAGE"
 }
 
+create_aliases() {
+  # Check ~/.bashrc contains a snippet like
+  # if [ -f ~/.bash_aliases ]; then
+  #   . ~/.bash_aliases (Check the .bashrc file contains a snippet like this)
+  # fi
+
+  # Return if file exists and don't break userspace
+  if [ -f ~/.bash_aliases ]; then
+    return
+  fi
+
+  if has_apt; then
+    if has_flatpak; then
+      echo "upgrade allias added to ~/.bash_alliases"
+      touch ~/.bash_aliases
+      echo "alias upgrade='sudo apt update; sudo apt upgrade; sudo apt autopurge; flatpak update; flatpak uninstall --unused --delete-data'" > ~/.bash_aliases
+    fi
+  fi
+
+  if has_dnf; then
+    if has_flatpak; then
+      echo "upgrade allias added to ~/.bash_alliases"
+      touch ~/.bash_aliases
+      echo "alias upgrade='sudo dnf upgrade; sudo dnf autoclean; flatpak update; flatpak uninstall --unused --delete-data'" > ~/.bash_aliases
+    fi
+  fi
+
+  if has_pacman; then
+    if has_flatpak; then
+      echo "upgrade allias added to ~/.bash_alliases"
+      touch ~/.bash_aliases
+      echo "alias upgrade='sudo pacman -Syyu; pacman -Qdtq | sudo pacman -Rs -; flatpak update; flatpak uninstall --unused --delete-data'" > ~/.bash_aliases
+    fi
+  fi
+}
+
 display_debian_welcome_message() {
   echo -e "                   ${RED},
           ,,,,,,,,,,,,,,,,,
@@ -940,4 +976,5 @@ main() {
   done
 }
 
+create_aliases
 main
