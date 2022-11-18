@@ -64,6 +64,10 @@ create_aliases() {
     return
   fi
 
+  if [ -f ~/.bashrc.d ]; then
+    return
+  fi
+
   if has_apt; then
     if has_flatpak; then
       echo "upgrade allias added to ~/.bash_alliases"
@@ -74,9 +78,9 @@ create_aliases() {
 
   if has_dnf; then
     if has_flatpak; then
-      echo "upgrade allias added to ~/.bash_alliases"
-      touch ~/.bash_aliases
-      echo "alias upgrade='sudo dnf upgrade; sudo dnf autoclean; flatpak update; flatpak uninstall --unused --delete-data'" > ~/.bash_aliases
+      echo "upgrade allias added to ~/.bashrc.d"
+      touch ~/.bashrc.d
+      echo "alias upgrade='sudo dnf upgrade; sudo dnf autoclean; flatpak update; flatpak uninstall --unused --delete-data'" > ~/.bashrc.d
     fi
   fi
 
