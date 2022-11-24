@@ -60,12 +60,10 @@ create_aliases() {
   # fi
 
   # Return if file exists and don't break userspace
-  if [ -f ~/.bash_aliases ]; then
-    return
-  fi
-
-  if [ -f ~/.bashrc.d ]; then
-    return
+  if has_apt; then
+    if [ -f ~/.bash_aliases ]; then
+      return
+    fi
   fi
 
   if has_apt; then
@@ -73,6 +71,12 @@ create_aliases() {
       echo "upgrade allias added to ~/.bash_alliases"
       touch ~/.bash_aliases
       echo "alias upgrade='sudo apt update; sudo apt upgrade; sudo apt autopurge; flatpak update; flatpak uninstall --unused --delete-data'" > ~/.bash_aliases
+    fi
+  fi
+
+  if has_dnf; then
+    if [ -f ~/.bashrc.d ]; then
+      return
     fi
   fi
 
